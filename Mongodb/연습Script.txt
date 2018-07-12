@@ -1,0 +1,867 @@
+> var a = db.post.find();
+> a
+{ "_id" : ObjectId("5b457273d64543e8115bbdb3"), "title" : "new post", "url" : "https://korea.ac.kr", "date" : "Wed Jul 11 2018 11:58:59 GMT+0900", "content" : "This is new post." }
+{ "_id" : ObjectId("5b45731dd64543e8115bbdb4"), "title" : "another post", "data" : ISODate("2018-07-11T03:01:49.522Z"), "content" : "Null", "recommend" : 0 }
+{ "_id" : 1, "title" : "title 1", "url" : "http://naver.com", "content" : "naver", "recommend" : 10 }
+{ "_id" : 2, "title" : "title2", "content" : "daum", "url" : "http://daum.net", "recommend" : 1 }
+{ "_id" : ObjectId("5b4575b0d64543e8115bbdb5"), "id" : 2, "title" : "titlemand" }
+> a.
+... ^C
+
+> var dc =db.testdecimal
+> dc.find();
+{ "_id" : 1, "value" : 9.9, "description" : "double" }
+{ "_id" : 2, "value" : NumberDecimal("9.90000000000000"), "description" : "decimal" }
+{ "_id" : 3, "value" : 10, "description" : "double" }
+{ "_id" : 4, "value" : 10, "description" : "int" }
+{ "_id" : 5, "value" : NumberDecimal("10.0000000000000"), "description" : "decimal" }
+> a.help
+function () {
+    print("find(<predicate>, <projection>) modifiers");
+    print("\t.sort({...})");
+    print("\t.limit(<n>)");
+    print("\t.skip(<n>)");
+    print("\t.batchSize(<n>) - sets the number of docs to return per getMore");
+    print("\t.collation({...})");
+    print("\t.hint({...})");
+    print("\t.readConcern(<level>)");
+    print("\t.readPref(<mode>, <tagset>)");
+    print(
+        "\t.count(<applySkipLimit>) - total # of objects matching query. by default ignores skip,limit");
+    print("\t.size() - total # of objects cursor would return, honors skip,limit");
+    print(
+        "\t.explain(<verbosity>) - accepted verbosities are {'queryPlanner', 'executionStats', 'allPlansExecution'}");
+    print("\t.min({...})");
+    print("\t.max({...})");
+    print("\t.maxScan(<n>)");
+    print("\t.maxTimeMS(<n>)");
+    print("\t.comment(<comment>)");
+    print("\t.tailable(<isAwaitData>)");
+    print("\t.noCursorTimeout()");
+    print("\t.allowPartialResults()");
+    print("\t.returnKey()");
+    print("\t.showRecordId() - adds a $recordId field to each returned object");
+
+    print("\nCursor methods");
+    print("\t.toArray() - iterates through docs and returns an array of the results");
+    print("\t.forEach(<func>)");
+    print("\t.map(<func>)");
+    print("\t.hasNext()");
+    print("\t.next()");
+    print("\t.close()");
+    print(
+        "\t.objsLeftInBatch() - returns count of docs left in current batch (when exhausted, a new getMore will be issued)");
+    print("\t.itcount() - iterates through documents and counts them");
+    print("\t.pretty() - pretty print each document, possibly over multiple lines");
+}
+> dir(a)
+2018-07-11T14:33:30.398+0900 E QUERY    [js] ReferenceError: dir is not defined :
+@(shell):1:1
+> a.help()
+find(<predicate>, <projection>) modifiers
+        .sort({...})
+        .limit(<n>)
+        .skip(<n>)
+        .batchSize(<n>) - sets the number of docs to return per getMore
+        .collation({...})
+        .hint({...})
+        .readConcern(<level>)
+        .readPref(<mode>, <tagset>)
+        .count(<applySkipLimit>) - total # of objects matching query. by default ignores skip,limit
+        .size() - total # of objects cursor would return, honors skip,limit
+        .explain(<verbosity>) - accepted verbosities are {'queryPlanner', 'executionStats', 'allPlansExecution'}
+        .min({...})
+        .max({...})
+        .maxScan(<n>)
+        .maxTimeMS(<n>)
+        .comment(<comment>)
+        .tailable(<isAwaitData>)
+        .noCursorTimeout()
+        .allowPartialResults()
+        .returnKey()
+        .showRecordId() - adds a $recordId field to each returned object
+
+Cursor methods
+        .toArray() - iterates through docs and returns an array of the results
+        .forEach(<func>)
+        .map(<func>)
+        .hasNext()
+        .next()
+        .close()
+        .objsLeftInBatch() - returns count of docs left in current batch (when exhausted, a new getMore will be issued)
+        .itcount() - iterates through documents and counts them
+        .pretty() - pretty print each document, possibly over multiple lines
+> print(a)
+DBQuery: test.post -> { }
+> a
+> a
+> a.
+...
+...
+>
+> a..
+...
+...
+>
+> db.item.find().pretty()
+{
+        "_id" : ObjectId("5b458bc433c4de7ece4a27e4"),
+        "name" : "YeezyBoost",
+        "price" : 10000
+}
+{
+        "_id" : ObjectId("5b458bc433c4de7ece4a27e5"),
+        "name" : "SwatchBunny",
+        "price" : 20000
+}
+{
+        "_id" : ObjectId("5b458bc433c4de7ece4a27e6"),
+        "name" : "polo ralph lauren shirts",
+        "price" : 15000
+}
+{
+        "_id" : ObjectId("5b458bc433c4de7ece4a27e7"),
+        "name" : "Google Home",
+        "price" : 50000
+}
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+> db.item.find().sort();
+Error: error: {
+        "ok" : 0,
+        "errmsg" : "Failed to parse: sort: undefined. 'sort' field must be of BSON type object.",
+        "code" : 9,
+        "codeName" : "FailedToParse"
+}
+> db.item.find().sort({price});
+2018-07-11T14:34:34.600+0900 E QUERY    [js] ReferenceError: price is not defined :
+@(shell):1:22
+> db.item.find().sort({price:1});
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+> db.item.find().sort({price:-1});
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+> db.item.find().count();
+4
+> //함수형 프로그래밍이 가능해졌다.
+> db.item.find({}).limit(3);
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+> db.item.find({}).skip(3)
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+> db.item.find({price:{$regex:/[20000-50000]/}});                           게
+> db.item.find({name:{$regex:/[Y-t]/}});
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+> db.item.find({name:{$regex:/[Y]/}});
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+> db.item.find({name:{$regex:/[G]/}});
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+> db.item.find({name:{$regex:/[A-c]/}});
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+> db.item.find({name:{$regex:/[A]/}});
+> db.item.find({name:{$regex:/[A-]/}});
+> db.item.find({name:{$regex:/[A-z]/}});
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+> db.item.find();
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Home", "price" : 50000 }
+> db.item.find({},{_id:false,name:true,price:true});
+{ "name" : "YeezyBoost", "price" : 10000 }
+{ "name" : "SwatchBunny", "price" : 20000 }
+{ "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "name" : "Google Home", "price" : 50000 }
+> db.item.update({name:"Google Home"},{name:"Google Mini Home"},{price: 55000});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.item.find();
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "YeezyBoost", "price" : 10000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home" }
+> typeof db.item.find()
+object
+> db.item.update({price:10000},{name:"item6",price:18000});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6", "price" : 18000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home" }
+> db.item.upate({price:{$gte:20000}},{name:"item7",price:250000},{multi:true});
+2018-07-11T15:02:37.048+0900 E QUERY    [js] TypeError: db.item.upate is not a function :
+@(shell):1:1
+> db.item.update({price:{$gte:20000}},{name:"item7",price:250000},{multi:true});
+WriteResult({
+        "nMatched" : 0,
+        "nUpserted" : 0,
+        "nModified" : 0,
+        "writeError" : {
+                "code" : 9,
+                "errmsg" : "multi update only works with $ operators"
+        }
+})
+> db.item.update({name:"item6"},{$set:{price:25000}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6", "price" : 25000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home" }
+> db.item.update({name:"Google Mini Home"},{$set:{price:25000}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6", "price" : 25000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 20000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 25000 }
+> db.item.update({price:{$gte:2500}},{$set:{price:30000}},{multi:true});
+WriteResult({ "nMatched" : 4, "nUpserted" : 0, "nModified" : 4 })
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 30000 }
+> db.item.insert({_id:1,"name":MacBook Pro,"price":25000000"});
+2018-07-11T15:07:28.858+0900 E QUERY    [js] SyntaxError: missing } after property list @(shell):1:37
+> db.item.insertOne({_id:1,"name":MacBook Pro,"price":25000000"});
+2018-07-11T15:07:37.220+0900 E QUERY    [js] SyntaxError: missing } after property list @(shell):1:40
+> db.item.insertOne({_id:1,"name":MacBook Pro,"price":25000000});
+2018-07-11T15:07:45.844+0900 E QUERY    [js] SyntaxError: missing } after property list @(shell):1:40
+> db.item.insertOne({_id:1,name:"MacBook Pro",price:25000000});
+{ "acknowledged" : true, "insertedId" : 1 }
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 30000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 25000000 }
+> db.item.update({name:"item6"},{id=false})
+2018-07-11T15:08:37.150+0900 E QUERY    [js] SyntaxError: missing : after property id @(shell):1:33
+> db.item.update({name:"item6"},{_id=false});
+2018-07-11T15:08:44.452+0900 E QUERY    [js] SyntaxError: missing : after property id @(shell):1:34
+> db.item.update({name:"item5"},{name:"item5",price:160000});
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+> db.item.update({name:"item5"},{name:"item5",price:160000}),{upsert:true});
+2018-07-11T15:09:39.614+0900 E QUERY    [js] SyntaxError: missing ; before statement @(shell):1:72
+> db.item.update({name:"item5"},{name:"item5",price:160000}),{upsert:true});
+2018-07-11T15:09:58.153+0900 E QUERY    [js] SyntaxError: missing ; before statement @(shell):1:72
+> db.item.update({name:"item5"},{name:"item5",price:160000}),{upsert:true});
+2018-07-11T15:10:23.547+0900 E QUERY    [js] SyntaxError: missing ; before statement @(shell):1:72
+> db.item.update({name:"item5"},{name:"item5",price:160000}},{upsert:true});
+2018-07-11T15:10:35.112+0900 E QUERY    [js] SyntaxError: missing ) after argument list @(shell):1:57
+> db.item.update({name:"item5"},{name:"item5",price:160000},{upsert:true});
+WriteResult({
+        "nMatched" : 0,
+        "nUpserted" : 1,
+        "nModified" : 0,
+        "_id" : ObjectId("5b459f756b523f4e20424d11")
+})
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 30000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 25000000 }
+{ "_id" : ObjectId("5b459f756b523f4e20424d11"), "name" : "item5", "price" : 160000 }
+> db.item.updateOne();
+2018-07-11T15:11:19.806+0900 E QUERY    [js] TypeError: can't convert undefined to object :
+DBCollection.prototype.updateOne@src/mongo/shell/crud_api.js:535:16
+@(shell):1:1
+> db.item.updateMany({name:/item[2-5]/},{$set:{price:25000}});
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 30000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 25000000 }
+{ "_id" : ObjectId("5b459f756b523f4e20424d11"), "name" : "item5", "price" : 25000 }
+> db.item.updateMany({name:"item6"},{$unset:{price:10000}});
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6" }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 30000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 25000000 }
+{ "_id" : ObjectId("5b459f756b523f4e20424d11"), "name" : "item5", "price" : 25000 }
+> db.item.updateMany({price:{$eq:25000}},{$inc:{price:5000}});
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.item.find
+function (query, fields, limit, skip, batchSize, options) {
+    var cursor = new DBQuery(this._mongo,
+                             this._db,
+                             this,
+                             this._fullName,
+                             this._massageObject(query),
+                             fields,
+                             limit,
+                             skip,
+                             batchSize,
+                             options || this.getQueryOptions());
+
+    {
+        const session = this.getDB().getSession();
+
+        const readPreference = session._serverSession.client.getReadPreference(session);
+        if (readPreference !== null) {
+            cursor.readPref(readPreference.mode, readPreference.tags);
+        }
+
+        const readConcern = session._serverSession.client.getReadConcern(session);
+        if (readConcern !== null) {
+            cursor.readConcern(readConcern.level);
+        }
+    }
+
+    return cursor;
+}
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6" }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 30000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 30000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 25000000 }
+{ "_id" : ObjectId("5b459f756b523f4e20424d11"), "name" : "item5", "price" : 30000 }
+> db.item.updateMany({price:{$gt:25000}},{$mul:price:0.5});
+2018-07-11T15:20:00.851+0900 E QUERY    [js] SyntaxError: missing } after property list @(shell):1:50
+> db.item.updateMany({price:{$gt:25000}},{$mul:{price:0.5}});
+{ "acknowledged" : true, "matchedCount" : 5, "modifiedCount" : 5 }
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6" }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 15000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 12500000 }
+{ "_id" : ObjectId("5b459f756b523f4e20424d11"), "name" : "item5", "price" : 15000 }
+> db.post.find()
+{ "_id" : ObjectId("5b457273d64543e8115bbdb3"), "title" : "new post", "url" : "https://korea.ac.kr", "date" : "Wed Jul 11 2018 11:58:59 GMT+0900", "content" : "This is new post." }
+{ "_id" : ObjectId("5b45731dd64543e8115bbdb4"), "title" : "another post", "data" : ISODate("2018-07-11T03:01:49.522Z"), "content" : "Null", "recommend" : 0 }
+{ "_id" : 1, "title" : "title 1", "url" : "http://naver.com", "content" : "naver", "recommend" : 10 }
+{ "_id" : 2, "title" : "title2", "content" : "daum", "url" : "http://daum.net", "recommend" : 1 }
+{ "_id" : ObjectId("5b4575b0d64543e8115bbdb5"), "id" : 2, "title" : "titlemand" }
+> db.post.update({title:"another post"},{$rename:{data:"date"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.post.find()
+{ "_id" : ObjectId("5b457273d64543e8115bbdb3"), "title" : "new post", "url" : "https://korea.ac.kr", "date" : "Wed Jul 11 2018 11:58:59 GMT+0900", "content" : "This is new post." }
+{ "_id" : ObjectId("5b45731dd64543e8115bbdb4"), "title" : "another post", "content" : "Null", "recommend" : 0, "date" : ISODate("2018-07-11T03:01:49.522Z") }
+{ "_id" : 1, "title" : "title 1", "url" : "http://naver.com", "content" : "naver", "recommend" : 10 }
+{ "_id" : 2, "title" : "title2", "content" : "daum", "url" : "http://daum.net", "recommend" : 1 }
+{ "_id" : ObjectId("5b4575b0d64543e8115bbdb5"), "id" : 2, "title" : "titlemand" }
+> db.post.find().pretty()
+{
+        "_id" : ObjectId("5b457273d64543e8115bbdb3"),
+        "title" : "new post",
+        "url" : "https://korea.ac.kr",
+        "date" : "Wed Jul 11 2018 11:58:59 GMT+0900",
+        "content" : "This is new post."
+}
+{
+        "_id" : ObjectId("5b45731dd64543e8115bbdb4"),
+        "title" : "another post",
+        "content" : "Null",
+        "recommend" : 0,
+        "date" : ISODate("2018-07-11T03:01:49.522Z")
+}
+{
+        "_id" : 1,
+        "title" : "title 1",
+        "url" : "http://naver.com",
+        "content" : "naver",
+        "recommend" : 10
+}
+{
+        "_id" : 2,
+        "title" : "title2",
+        "content" : "daum",
+        "url" : "http://daum.net",
+        "recommend" : 1
+}
+{
+        "_id" : ObjectId("5b4575b0d64543e8115bbdb5"),
+        "id" : 2,
+        "title" : "titlemand"
+}
+> db.testlist.insertMany(
+... {_id:1,list=[1,2,3,4]},
+... db.post.find()^C
+
+> db.testlist.insertMany(
+... {_id:1,list=[1,2,3,4]},
+... db.post.find()^C
+
+> db.testlist.insertMany(
+... {_id:1,list:[1,2,3,4]},
+... {_id:2,list:["a","b","c","d"]},
+... {_id:3,doc:[{name:"A",price:100}]});
+2018-07-11T15:28:48.705+0900 E QUERY    [js] TypeError: documents.map is not a function :
+DBCollection.prototype.insertMany@src/mongo/shell/crud_api.js:295:1
+@(shell):1:1
+> db.testlist.insertMany([{_id:1,list:[1,2,3,4]}, {_id:2,list:["a","b","c","d"]}, {_id:3,doc:[{name:"A",price:100}]}]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+> db.find.all()
+2018-07-11T15:30:48.353+0900 E QUERY    [js] TypeError: db.find.all is not a function :
+@(shell):1:1
+> var ak47 = db.testlist.find()
+> ak47
+{ "_id" : 1, "list" : [ 1, 2, 3, 4 ] }
+{ "_id" : 2, "list" : [ "a", "b", "c", "d" ] }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> db.testlist.find({list:2});
+{ "_id" : 1, "list" : [ 1, 2, 3, 4 ] }
+> db.testlist.find({list:10});
+> db.testlist.find({list:A});
+2018-07-11T15:33:17.058+0900 E QUERY    [js] ReferenceError: A is not defined :
+@(shell):1:19
+> db.testlist.find({list:"A"});
+> db.testlist.find({list:2});
+{ "_id" : 1, "list" : [ 1, 2, 3, 4 ] }
+> db.testlist.find({list:1});
+{ "_id" : 1, "list" : [ 1, 2, 3, 4 ] }
+> db.testlist.find({doc:"A
+2018-07-11T15:34:24.695+0900 E QUERY    [js] SyntaxError: unterminated string literal @(shell):1:22
+> db.testlist.find({doc:"A"});
+> db.testlist.find({doc.name:"A"});
+2018-07-11T15:34:57.189+0900 E QUERY    [js] SyntaxError: missing : after property id @(shell):1:21
+> db.testlist.find({doc.$name:"A"});
+2018-07-11T15:35:34.849+0900 E QUERY    [js] SyntaxError: missing : after property id @(shell):1:21
+> var m4 = db.testlist
+> ak47
+> m4
+test.testlist
+> m4.find()
+{ "_id" : 1, "list" : [ 1, 2, 3, 4 ] }
+{ "_id" : 2, "list" : [ "a", "b", "c", "d" ] }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> m4.updateOne({_id:1},{$set:{list:10}});
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> m4.find()
+{ "_id" : 1, "list" : 10 }
+{ "_id" : 2, "list" : [ "a", "b", "c", "d" ] }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> m4.updateOne({_id:1},{$set:{list:[10]}});
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> m4.find()
+{ "_id" : 1, "list" : [ 10 ] }
+{ "_id" : 2, "list" : [ "a", "b", "c", "d" ] }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> m4.updateOne({_id:1},{$push:{list:11,12}});
+2018-07-11T15:41:33.306+0900 E QUERY    [js] SyntaxError: missing : after property id @(shell):1:39
+> m4.updateOne({_id:1},{$push:{list:11,12}});
+2018-07-11T15:41:49.347+0900 E QUERY    [js] SyntaxError: missing : after property id @(shell):1:39
+> m4.updateOne({_id:1},{$push:{list:11}});
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> m4.find()
+{ "_id" : 1, "list" : [ 10, 11 ] }
+{ "_id" : 2, "list" : [ "a", "b", "c", "d" ] }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> m4.updateOne({_id:1},{$push:{list:[11,12,13]}});
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> m4.find()
+{ "_id" : 1, "list" : [ 10, 11, [ 11, 12, 13 ] ] }
+{ "_id" : 2, "list" : [ "a", "b", "c", "d" ] }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> db.testlist.updateOne({list:"c"}{list.$:"C"});
+2018-07-11T15:44:10.673+0900 E QUERY    [js] SyntaxError: missing ) after argument list @(shell):1:32
+> db.testlist.updateOne({list:"c"},{list.$:"C"});
+2018-07-11T15:45:44.744+0900 E QUERY    [js] SyntaxError: missing : after property id @(shell):1:38
+> db.testlist.updateOne({list:"c"},{'list.$':"C"});
+2018-07-11T15:45:52.191+0900 E QUERY    [js] Error: the update operation document must contain atomic operators :
+DBCollection.prototype.updateOne@src/mongo/shell/crud_api.js:542:1
+@(shell):1:1
+> db.testlist.update({list:"c"},{'list.$':"C"});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.testlist.find()
+{ "_id" : 1, "list" : [ 10, 11, [ 11, 12, 13 ] ] }
+{ "_id" : 2, "list.$" : "C" }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> db.testlist.update({list:"c"},{'list.$':["a","b","c","d"]});
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+> m4.find()
+{ "_id" : 1, "list" : [ 10, 11, [ 11, 12, 13 ] ] }
+{ "_id" : 2, "list.$" : "C" }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> db.testlist.update({list:"c"},{'list':["a","b","c","d"]});
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+> m4.find()
+{ "_id" : 1, "list" : [ 10, 11, [ 11, 12, 13 ] ] }
+{ "_id" : 2, "list.$" : "C" }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> db.testlist.update({list.$:"C"},{'list':["a","b","c","d"]});
+2018-07-11T15:47:54.805+0900 E QUERY    [js] SyntaxError: missing : after property id @(shell):1:24
+> db.testlist.update({'list.$':"C"},{'list':["a","b","c","d"]});
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+> m4.find()
+{ "_id" : 1, "list" : [ 10, 11, [ 11, 12, 13 ] ] }
+{ "_id" : 2, "list.$" : "C" }
+{ "_id" : 3, "doc" : [ { "name" : "A", "price" : 100 } ] }
+> db.item.remove({name:"list.$"});
+WriteResult({ "nRemoved" : 0 })
+> db.item.remove({name:list.$});
+2018-07-11T15:49:31.496+0900 E QUERY    [js] ReferenceError: list is not defined :
+@(shell):1:17
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6" }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 15000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 12500000 }
+{ "_id" : ObjectId("5b459f756b523f4e20424d11"), "name" : "item5", "price" : 15000 }
+> db.item.remove({name:/item[2-4]/});
+WriteResult({ "nRemoved" : 0 })
+> db.find()
+2018-07-11T15:50:12.725+0900 E QUERY    [js] TypeError: db.find is not a function :
+@(shell):1:1
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e4"), "name" : "item6" }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 15000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 12500000 }
+{ "_id" : ObjectId("5b459f756b523f4e20424d11"), "name" : "item5", "price" : 15000 }
+> db.item.remove({name: /item[2-4]/});
+WriteResult({ "nRemoved" : 0 })
+> db.item.remove({name: /item[2-6]/});
+WriteResult({ "nRemoved" : 2 })
+> db.item.find()
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e5"), "name" : "SwatchBunny", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e6"), "name" : "polo ralph lauren shirts", "price" : 15000 }
+{ "_id" : ObjectId("5b458bc433c4de7ece4a27e7"), "name" : "Google Mini Home", "price" : 15000 }
+{ "_id" : 1, "name" : "MacBook Pro", "price" : 12500000 }
+> db.item.drop()
+true
+> db.item.find()
+> add_item=function(){
+... for(count=0;count<10000;count++){
+... db.item.insertOne({name:"item"+count,price:NumberInt(Math.random()*50000)};}}
+...
+...
+> add_item = function(){
+... for(count=0;count<10000;count++){
+... db.item.insertOne({name:"item"+count, price:NumberInt(Math.random()*50000)});}}
+function (){
+for(count=0;count<10000;count++){
+db.item.insertOne({name:"item"+count, price:NumberInt(Math.random()*50000)});}}
+> add_item
+function (){
+for(count=0;count<10000;count++){
+db.item.insertOne({name:"item"+count, price:NumberInt(Math.random()*50000)});}}
+> add_item()
+> db.item.find().count()
+10000
+> db.item.getIndexes();
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "test.item"
+        }
+]
+> db.item.createIndex({price:-1});
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "ok" : 1
+}
+> db.item.find(_
+... ^C
+
+> db.item.getIndexes()
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "test.item"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "price" : -1
+                },
+                "name" : "price_-1",
+                "ns" : "test.item"
+        }
+]
+> db.item.find({$gte:{price:90000}});
+Error: error: {
+        "ok" : 0,
+        "errmsg" : "unknown top level operator: $gte",
+        "code" : 2,
+        "codeName" : "BadValue"
+}
+> db.item.find({price:{$gte:90000}});
+> db.item.find({price:{$gte:48000}});
+{ "_id" : ObjectId("5b45aa4dde75558ee41f445d"), "name" : "item3110", "price" : 49989 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f522b"), "name" : "item6644", "price" : 49982 }
+{ "_id" : ObjectId("5b45aa4dde75558ee41f4858"), "name" : "item4129", "price" : 49976 }
+{ "_id" : ObjectId("5b45aa4dde75558ee41f4bd4"), "name" : "item5021", "price" : 49968 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3b2b"), "name" : "item756", "price" : 49966 }
+{ "_id" : ObjectId("5b45aa4fde75558ee41f5dd0"), "name" : "item9625", "price" : 49963 }
+{ "_id" : ObjectId("5b45aa4fde75558ee41f5d82"), "name" : "item9547", "price" : 49957 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f59cf"), "name" : "item8600", "price" : 49952 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f4e98"), "name" : "item5729", "price" : 49945 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3e5a"), "name" : "item1571", "price" : 49940 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f55e5"), "name" : "item7598", "price" : 49939 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f55a2"), "name" : "item7531", "price" : 49938 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f5624"), "name" : "item7661", "price" : 49929 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f5829"), "name" : "item8178", "price" : 49928 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f51f2"), "name" : "item6587", "price" : 49922 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f415a"), "name" : "item2339", "price" : 49914 }
+{ "_id" : ObjectId("5b45aa4dde75558ee41f4d05"), "name" : "item5326", "price" : 49913 }
+{ "_id" : ObjectId("5b45aa4dde75558ee41f4a2f"), "name" : "item4600", "price" : 49907 }
+{ "_id" : ObjectId("5b45aa4fde75558ee41f5bac"), "name" : "item9077", "price" : 49897 }
+{ "_id" : ObjectId("5b45aa4ede75558ee41f542b"), "name" : "item7156", "price" : 49894 }
+Type "it" for more
+> db.item.dropIndex({price:-1});
+{ "nIndexesWas" : 2, "ok" : 1 }
+> db.item.getIndexes();
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "test.item"
+        }
+]
+> db.item.find({price:{$gte:48000}});
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3845"), "name" : "item14", "price" : 49682 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3856"), "name" : "item31", "price" : 48641 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3860"), "name" : "item41", "price" : 48908 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3874"), "name" : "item61", "price" : 48088 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f388e"), "name" : "item87", "price" : 48913 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f38a1"), "name" : "item106", "price" : 48796 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f38a9"), "name" : "item114", "price" : 49430 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f38ac"), "name" : "item117", "price" : 48420 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f38ba"), "name" : "item131", "price" : 48848 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f38c8"), "name" : "item145", "price" : 48954 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f38cb"), "name" : "item148", "price" : 48476 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f38e6"), "name" : "item175", "price" : 48770 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f391e"), "name" : "item231", "price" : 48655 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3920"), "name" : "item233", "price" : 48127 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3949"), "name" : "item274", "price" : 48895 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3965"), "name" : "item302", "price" : 49510 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3967"), "name" : "item304", "price" : 48523 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3978"), "name" : "item321", "price" : 49024 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3990"), "name" : "item345", "price" : 49407 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f399a"), "name" : "item355", "price" : 48057 }
+Type "it" for more
+> db.item.getIndexes();
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "test.item"
+        }
+]
+> //인덱스작업을해두어야 자주쓰는 필드에 접근해서 빠르게 결과가나온다
+> db.item.
+...
+...
+> db.item.totalIndexSize()
+98304
+> db.item.createIndex({price:-1});       접근해서 빠르게 결과가나온다
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "ok" : 1
+}
+> db.item.createIndex({price:1});
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 2,
+        "numIndexesAfter" : 3,
+        "ok" : 1
+}
+> db.item.createIndex({name:1});
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 3,
+        "numIndexesAfter" : 4,
+        "ok" : 1
+}
+> db.item.createIndex({name:-1});
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 4,
+        "numIndexesAfter" : 5,
+        "ok" : 1
+}
+> db.item.getIndexes();
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "test.item"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "price" : -1
+                },
+                "name" : "price_-1",
+                "ns" : "test.item"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "price" : 1
+                },
+                "name" : "price_1",
+                "ns" : "test.item"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "name" : 1
+                },
+                "name" : "name_1",
+                "ns" : "test.item"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "name" : -1
+                },
+                "name" : "name_-1",
+                "ns" : "test.item"
+        }
+]
+> db.item.getIndexes().count()
+2018-07-11T16:09:47.984+0900 E QUERY    [js] TypeError: db.item.getIndexes(...).count is not a function :
+@(shell):1:1
+> db.item.totalIndexSize();
+557056
+> db.item.dropIndexes();
+{
+        "nIndexesWas" : 5,
+        "msg" : "non-_id indexes dropped for collection",
+        "ok" : 1
+}
+> db.item.getIndexes();
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "test.item"
+        }
+]
+> show collections
+item
+post
+tag
+testdecimal
+testlist
+> db.item.find();
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3837"), "name" : "item0", "price" : 40165 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3838"), "name" : "item1", "price" : 19488 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3839"), "name" : "item2", "price" : 40826 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f383a"), "name" : "item3", "price" : 7465 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f383b"), "name" : "item4", "price" : 18315 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f383c"), "name" : "item5", "price" : 20485 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f383d"), "name" : "item6", "price" : 28678 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f383e"), "name" : "item7", "price" : 7926 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f383f"), "name" : "item8", "price" : 38704 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3840"), "name" : "item9", "price" : 22631 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3841"), "name" : "item10", "price" : 12183 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3842"), "name" : "item11", "price" : 18249 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3843"), "name" : "item12", "price" : 21937 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3844"), "name" : "item13", "price" : 25362 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3845"), "name" : "item14", "price" : 49682 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3846"), "name" : "item15", "price" : 31036 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3847"), "name" : "item16", "price" : 1414 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3848"), "name" : "item17", "price" : 20073 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f3849"), "name" : "item18", "price" : 17056 }
+{ "_id" : ObjectId("5b45aa4cde75558ee41f384a"), "name" : "item19", "price" : 37235 }
+Type "it" for more
+> db.item.find();^C
+bye
+
+C:\Program Files\MongoDB\Server\4.0\bin>mongo -u "root" -p "root" -authenticationDatabase "admin"
+MongoDB shell version v4.0.0
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 4.0.0
+Server has startup warnings:
+2018-07-11T11:29:42.088+0900 I CONTROL  [initandlisten]
+2018-07-11T11:29:42.088+0900 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2018-07-11T11:29:42.088+0900 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2018-07-11T11:29:42.088+0900 I CONTROL  [initandlisten]
+---
+Enable MongoDB's free cloud-based monitoring service to collect and display
+metrics about your deployment (disk utilization, CPU, operation statistics,
+etc).
+
+The monitoring data will be available on a MongoDB website with a unique
+URL created for you. Anyone you share the URL with will also be able to
+view this page. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command:
+db.enableFreeMonitoring()
+---
+
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+newDB   0.000GB
+test    0.001GB
+> use test
+switched to db test
+> show collection
+2018-07-11T16:25:03.494+0900 E QUERY    [js] Error: don't know how to show [collection] :
+shellHelper.show@src/mongo/shell/utils.js:1043:11
+shellHelper@src/mongo/shell/utils.js:755:15
+@(shellhelp2):1:1
+> show collections
+item
+post
+tag
+testdecimal
+testlist
+> db.item.insert({name: "name"});
+WriteResult({ "nInserted" : 1 })
+> show collections
+item
+post
+tag
+testdecimal
+testlist
+>
