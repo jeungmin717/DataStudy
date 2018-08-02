@@ -1,0 +1,354 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+{% block script %}
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration -->
+{% endblock %}
+
+{%  block styles %}
+<link rel="stylesheet" href="/static/css/report_css.css">
+{% endblock %}
+</head>
+
+<body>
+ {% block content %}
+<i class="fab fa-accusoft"></i>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise82:TaxiFare">Exercise82:TaxiFare<a class="anchor-link" href="#Exercise82:TaxiFare">&#182;</a></h1><p>(22 Lines) In a particular jurisdiction, taxi fares consist of a base fare of $4.00, plus $0.25 for every 140 meters traveled.<br> Write a function that takes the distance traveled (in kilometers) as its only parameter and returns the total fare as its only result.<br> Write a main program that demonstrates the function.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#1.</span>
+<span class="c1"># kilometes</span>
+<span class="k">def</span> <span class="nf">distance_trveled</span><span class="p">(</span><span class="n">distance</span><span class="p">):</span>
+    <span class="n">basefare</span> <span class="o">=</span> <span class="mf">4.00</span> 
+    <span class="n">distance</span> <span class="o">%=</span> <span class="mi">140</span>
+    <span class="n">basefare</span> <span class="o">=</span> <span class="n">basefare</span>  <span class="o">+</span> <span class="p">(</span><span class="n">distance</span> <span class="o">*</span> <span class="mf">0.25</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">basefare</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TaxiFare&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;kilometers&#39;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input kilometers&#39;</span><span class="p">))</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">distance_trveled</span><span class="p">(</span><span class="n">num</span><span class="o">*</span><span class="mi">1</span><span class="n">_000</span><span class="p">))</span>
+    
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no str&#39;</span><span class="p">)</span>
+    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise84:Median-of-Three-Values">Exercise84:Median of Three Values<a class="anchor-link" href="#Exercise84:Median-of-Three-Values">&#182;</a></h1><p>(Solved—42 Lines)<br>
+Write a function that takes three numbers as parameters,and returns the median value of those parameters as its result.<br>
+Include a main program that reads three values from the user and displays their median.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2.</span>
+<span class="k">def</span> <span class="nf">median_of_Threevalues</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+    <span class="n">m_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">,</span><span class="n">c</span><span class="p">]</span>
+    <span class="n">m_list</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">m_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">try</span><span class="p">:</span>    
+    <span class="n">num</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;num1 : &#39;</span><span class="p">)</span>
+    <span class="n">num2</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;num2 : &#39;</span><span class="p">)</span>
+    <span class="n">num3</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;num3 : &#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">median_of_Threevalues</span><span class="p">(</span><span class="n">num</span><span class="p">,</span><span class="n">num2</span><span class="p">,</span><span class="n">num3</span><span class="p">))</span>
+    
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Nope&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise85:Convert-an-Integer-to-its-Ordinal-Number">Exercise85:Convert an Integer to its Ordinal Number<a class="anchor-link" href="#Exercise85:Convert-an-Integer-to-its-Ordinal-Number">&#182;</a></h1><p>(47 Lines) <br>
+Words like ﬁrst,second and third are referred to as ordinal numbers.
+<br>In this exercise, you will write a function that takes an integer as its only parameter and returns a string containing the appropriate English ordinal number as its only result.<Br> Your function must handle the integers between 1 and 12 (inclusive).<br> It should return an empty string if a value outside of this range is provided as a parameter.<br> Include a main program that demonstrates your function by displaying each integer from 1 to 12 and its ordinal number.<br> Your main program should only run when your ﬁle has not been imported into another program.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#3.</span>
+<span class="c1"># return  String</span>
+<span class="c1"># handle integes 1~12</span>
+<span class="c1"># 12 over return empty</span>
+<span class="c1"># 1 ~ 12 number insert</span>
+<span class="k">def</span> <span class="nf">Convert_Intger</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+    <span class="n">convert_dict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;third&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="s1">&#39;four&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span><span class="s1">&#39;five&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span><span class="s1">&#39;six&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span><span class="s1">&#39;sven&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span><span class="s1">&#39;eight&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span><span class="s1">&#39;nine&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">:</span><span class="s1">&#39;ten&#39;</span><span class="p">,</span><span class="mi">11</span><span class="p">:</span><span class="s1">&#39;eleven&#39;</span><span class="p">,</span><span class="mi">12</span><span class="p">:</span><span class="s1">&#39;twelve&#39;</span><span class="p">}</span>
+    
+    <span class="k">if</span> <span class="n">nums</span> <span class="ow">in</span> <span class="n">convert_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">convert_dict</span><span class="p">[</span><span class="n">nums</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;잘못 입력 했습니다.&#39;</span><span class="p">)</span>
+        
+<span class="k">try</span><span class="p">:</span>    
+    <span class="n">num</span> <span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;0&#39;</span> <span class="o">&lt;</span> <span class="n">num</span> <span class="o">&lt;</span><span class="s1">&#39;13&#39;</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">Convert_Intger</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no str&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise88:Is-it-a-Valid-Triangle?">Exercise88:Is it a Valid Triangle?<a class="anchor-link" href="#Exercise88:Is-it-a-Valid-Triangle?">&#182;</a></h1><p>(33 Lines) <br>
+If you have 3 straws, possibly of differing lengths, it may or may not be possible to lay them down so that they form a triangle when their ends are touching.<br>
+For example, if all of the straws have a length of 6 inches. then one can easily construct an equilateral triangle using them.<br>
+However, if one straw is 6 inches. long, while the other two are each only 2 inches. long, then a triangle cannot be formed.<br>
+In general, if any one length is greater than or equal to the sum of the other two then the lengths cannot be used to form a triangle.<br> Otherwise they can form a triangle.<br>
+Write a function that determines whether or not three length scan form a triangle.<br>
+The function will take 3 parameters and return a Boolean result. In addition, write a program that reads 3 lengths from the user and demonstrates the behaviour of this function.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#4.</span>
+<span class="c1"># 3 straws</span>
+<span class="c1"># 3 = each 6 inches 정삼각형 </span>
+<span class="c1"># 1 =&gt; 6 ,2 =&gt; each 2  Nope</span>
+<span class="c1"># Write a function that determines whether or not three length scan form a triangle.</span>
+<span class="c1"># The function will take 3 parameters and return a Boolean result.</span>
+<span class="c1"># write a program that reads 3 lengths</span>
+
+<span class="k">def</span> <span class="nf">Valid_Triangle</span><span class="p">(</span><span class="n">num</span><span class="p">,</span><span class="n">num2</span><span class="p">,</span><span class="n">num3</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span><span class="p">[]</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span><span class="p">,</span><span class="n">num2</span><span class="p">,</span><span class="n">num3</span><span class="p">]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    
+    <span class="n">t</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+<span class="k">try</span><span class="p">:</span>    
+    <span class="n">num</span>  <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;straw_1 : &#39;</span><span class="p">)</span>
+    <span class="n">num2</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;straw_2 : &#39;</span><span class="p">)</span>
+    <span class="n">num3</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;straw_3 : &#39;</span><span class="p">)</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">Valid_Triangle</span><span class="p">(</span><span class="n">num</span><span class="p">,</span><span class="n">num2</span><span class="p">,</span><span class="n">num3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">valid</span>  <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;invalid&#39;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Nope&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise92:Is-a-Number-Prime?">Exercise92:Is a Number Prime?<a class="anchor-link" href="#Exercise92:Is-a-Number-Prime?">&#182;</a></h1><p>(Solved—28 Lines)<br>
+A prime number is an integer greater than 1 that is only divisible by one and itself.<br>
+Write a function that determines whether or not its parameter is prime, returning True if it is, and False otherwise.<br>
+Write a main program that reads an integer from the user and displays a message indicating whether or not it is prime.<br>
+Ensure that the main program will not run if the ﬁle containing your solution is imported into another program.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#5.&#39;</span>
+<span class="c1"># division only 1 over </span>
+<span class="c1"># return True or False</span>
+<span class="c1"># reads an integer from the user and displays a message indicating whether or not it is prime.</span>
+
+<span class="k">def</span> <span class="nf">Nmber_Prime</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+    
+    <span class="n">t</span> <span class="o">=</span><span class="p">[]</span>
+    <span class="k">if</span> <span class="n">nums</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">nums</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">nums</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+             <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+            
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+         <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    
+<span class="k">try</span><span class="p">:</span> 
+    <span class="n">num</span> <span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">if</span>  <span class="n">num</span> <span class="o">&gt;</span> <span class="s1">&#39;0&#39;</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">Nmber_Prime</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="n">j</span> <span class="o">=</span> <span class="n">Nmber_Prime</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">j</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number Prime&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No&#39;</span><span class="p">)</span>      
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no str&#39;</span><span class="p">)</span>
+    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>input2
+Number Prime
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise86:-The-Twelve-Days-of-Christmas">Exercise86: The Twelve Days of Christmas<a class="anchor-link" href="#Exercise86:-The-Twelve-Days-of-Christmas">&#182;</a></h1><p>(Solved—48 Lines) <br>
+The Twelve Days of Christmas is a repetitive song that describes an increasingly long list of gifts sent to one’s true love on each of 12 days. A single gift is sent on the ﬁrst day.<br> A new gift is added to the collection on each additional day, and then the complete collection is sent.<br> The ﬁrst three verses of the song are shown below.<br> The complete lyrics are available on the internet.<br>
+On the ﬁrst day of Christmas<br> my true love sent to me:<br> A partridge in a pear tree.<br>
+On the second day of Christmas<br> my true love sent to me:<br> Two turtle doves, And a partridge in a pear tree.<br>
+On the third day of Christmas<br> my true love sent to me:<br> Three French hens,<br> Two turtle doves,<br> And a partridge in a pear tree.<br>
+Your task is to write a program that displays the complete lyrics for The Twelve Days of Christmas.<br> Write a function that takes the verse number as its only parameter and displays the speciﬁed verse of the song.<br>
+Then call that function 12 times with integers that increase from 1 to 12. <br> 
+Each item that is sent to the recipient in the song should only appear once in your program, with the possible exception of the partridge.<br>
+It may appear twice if that helps you handle the difference between“A partridge in apear tree”in the ﬁrst verse and “And a partridge in a pear tree” in the subsequent verses.<br> Import your solution to Exercise 85 to help you complete this exercise.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#6. </span>
+<span class="c1"># takes the verse number as its only parameter </span>
+<span class="c1"># and displays the speciﬁed verse of the song.</span>
+
+<span class="c1"># Then call that function 12 times with integers that increase from 1 to 12. </span>
+<span class="c1"># song should only appear once in your program, with the possible exception of the partridge.</span>
+<span class="c1"># </span>
+<span class="k">def</span> <span class="nf">Convert_Intger</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+    <span class="n">convert_dict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">8</span><span class="p">:</span> <span class="p">}</span>
+    <span class="k">if</span> <span class="n">nums</span> <span class="ow">in</span> <span class="n">convert_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">convert_dict</span><span class="p">[</span><span class="n">nums</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;잘못 입력 했습니다.&#39;</span><span class="p">)</span>
+
+        
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
+{% endblock %}
+
+</body>
+
+ 
+
+
+</html>

@@ -1,0 +1,918 @@
+{% extends 'base.html' %}
+{% block scripts %}
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration -->
+{% endblock %}
+
+{%  block styles %}
+<link rel="stylesheet" href="/static/css/report_css.css">
+{% endblock %}
+
+
+
+
+{% block content %}
+    <i class="fab fa-accusoft"></i>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+  <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise-105:-Reverse-order">Exercise 105: Reverse order<a class="anchor-link" href="#Exercise-105:-Reverse-order">&#182;</a></h1><p>Write a program that reads integers from the user and stores them in a list. <br>
+ Use 0 as a setninel value to mark the end of the input.<br> Once all of the vlaues have been read your program should display them
+ (except fot the 0) in reverse order. with one value appearing in each line.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#1.</span>
+<span class="n">t</span> <span class="o">=</span><span class="p">[]</span>
+<span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">while</span> <span class="n">flag</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input : &#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">flag</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>    
+        <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="n">t</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>input : 3
+input : 3
+input : 4
+input : 5
+input : 6
+input : 0
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[6, 5, 4, 3, 3]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#1. </span>
+<span class="c1"># 1-1. sol 인덱스로 추출</span>
+<span class="c1"># 1-2. sol reverse()</span>
+
+<span class="n">num_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span> <span class="c1"># 문자 받을시 에러가 나기 때문에 </span>
+        <span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+    <span class="k">except</span><span class="p">:</span>
+        
+    <span class="k">if</span> <span class="n">num</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">num_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        
+<span class="c1">#for i in range(len(num_list)-1,-1,-1):</span>
+<span class="c1">#    print(num_list[i], end=&quot; &quot;)</span>
+
+<span class="n">num_list</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">num_list</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">num_list</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">num_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6
+5
+4
+3
+2
+1
+0
+1 2 3 4 5 6 </pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exercise107:AvoidingDuplicates">Exercise107:AvoidingDuplicates<a class="anchor-link" href="#Exercise107:AvoidingDuplicates">&#182;</a></h2><p>In this exercise, you will create a program that reads words from the user until the user enters a blank line.<br>
+After the user enters a blank line your program should display each word entered by the user exactly once. <br>
+The words should be displayed in the same order that they were entered. For example, if the user enters:<br>
+first <br>
+second <br>
+first <br>
+third <br>
+second<br></p>
+<p>then your program should display:<br>
+first<br>
+second <br>
+third<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2.</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">d</span> <span class="o">=</span><span class="p">[]</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input:&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">d</span> <span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">d</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+              
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>input:first
+input:second
+input:first
+input:third
+input:second
+input:
+first
+second
+third
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise-108:-Negatives,-Zeros-and-Postives">Exercise 108: Negatives, Zeros and Postives<a class="anchor-link" href="#Exercise-108:-Negatives,-Zeros-and-Postives">&#182;</a></h1><p>Create a program that reads integers from the user until a blank line is entered.<br>
+Once all of the integers have been read your program should display all of the negative numbers, followed by all of the zeros,
+followd by all of the postive numbers.<br>
+Within each group the numbers should be displayed in the same order that they were entered by the user. <br>
+For example, if the user enters the values 3, -4, 1,0,-1,0, and -2 then your program should output the values -4, -1, -2, 0, 0, 3 and 1. <br>
+Your program should display each value on its own line.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#3.</span>
+<span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">while</span> <span class="n">flag</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input:&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;&#39;</span> <span class="o">!=</span> <span class="n">a</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;only integer!!!&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">flag</span>
+
+<span class="n">t</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="n">t</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>input:4
+input:5
+input:6
+input:0
+input:-1
+input:
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[-1, 0, 4, 5, 6]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#3. sol</span>
+
+
+<span class="n">neg_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">zero_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">pos_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="n">num</span> <span class="ow">is</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">break</span>
+        
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">continue</span>
+    
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">neg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">num</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">zero_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pos_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="n">neg_list</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">zero_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pos_list</span><span class="p">)</span>
+<span class="c1"># for문으로 음수 인지 아닌지 </span>
+<span class="c1"># for문으로 0을 팝 </span>
+
+        
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1
+2
+7
+0
+9
+-9
+8
+
+[-9]
+[0]
+[1, 2, 7, 9, 8]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise-110:-perfect-Numbers">Exercise 110: perfect Numbers<a class="anchor-link" href="#Exercise-110:-perfect-Numbers">&#182;</a></h1><p>An integer, n, is said to be perfect when the sum of all of the proper divisors of n is equal to n. <br>
+For example, 28 is a perfect number because its proper divisors are 1, 2, 4, 7 and 14, and, 1 + 2 + 4 +7 +14 =28<br>
+Write a function that determines wheather or not a positive integeris perfect.<br>
+Your function will take one parmeter. <br>
+If that parameter is a perfect number then your function will return true.Otherwise, it will return false.<br> 
+In addition, write a main program that uses your function to identify and display all of the perfect numbers between 1 and 10,000.<br> 
+Import your solution to Exercise 109 when completing this task.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#4.</span>
+
+<span class="k">def</span> <span class="nf">perfect_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+
+    <span class="n">i</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">t</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">%</span><span class="k">i</span> == 0:
+            <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+  
+    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kc">False</span>
+        
+<span class="n">perfect_func</span><span class="p">(</span><span class="mi">28</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="n">_000</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">perfect_func</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6
+28
+496
+8128
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">range</span><span class="p">(</span><span class="mf">10.5</span><span class="p">)</span> <span class="c1">#오직 정수 값만 가능</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-24-b3610a47ee94&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>range<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">10.5</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-red-intense-fg ansi-bold">TypeError</span>: &#39;float&#39; object cannot be interpreted as an integer</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#4. sol</span>
+<span class="k">def</span> <span class="nf">common</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="n">common_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span><span class="c1"># range의 첫번 째 인자가 없으면 0부터 시작 또한 끝자리는 n -1 </span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="n">i</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">common_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">common_list</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">common</span><span class="p">(</span><span class="mi">496</span><span class="p">)</span> 
+<span class="n">a</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[34]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[1, 2, 4, 8, 16, 31, 62, 124, 248]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10001</span><span class="p">):</span>
+    <span class="n">common_i</span> <span class="o">=</span> <span class="n">common</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    
+    <span class="n">sum_common</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">common_i</span><span class="p">:</span>
+        <span class="n">sum_common</span> <span class="o">+=</span> <span class="n">j</span>
+    
+    <span class="k">if</span> <span class="n">sum_common</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span> <span class="c1">#why is ?? -&gt; memory pro........</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6
+28
+496
+8128
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise-113:-Formatting-a-List">Exercise 113: Formatting a List<a class="anchor-link" href="#Exercise-113:-Formatting-a-List">&#182;</a></h1><p>When writing out a list of items in English, one normally separates the items with commas.<Br>
+Inaddition,theword“and”is normally included before the last item,unless the list only contains one item.<br></p>
+<p>Consider the following four lists:<br>
+apples <br>
+apples and oranges<br> 
+apples,oranges and bananas<br>
+apples, oranges, bananas and lemons<br></p>
+<p>Write a function that takes a list of strings as its only parameter. <br>
+Your function should return a string that contains all of the items in the list formatted in the manner described previously as its only result. <br>
+While the examples shown previously only include lists containing four elements or less, your function should behave correctly for lists of any length.<br>
+Include a main program that reads several items from the user, formats them by calling your function, and then displays the result returned by the function.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#5.</span>
+<span class="n">t</span> <span class="o">=</span><span class="p">[]</span>
+<span class="k">def</span> <span class="nf">add_list</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">t</span><span class="o">=</span> <span class="n">x</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>            
+        
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>            
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; and&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span><span class="mi">1</span>
+    <span class="nb">print</span><span class="p">()</span>
+<span class="n">add_list</span><span class="p">([</span><span class="s1">&#39;apples&#39;</span><span class="p">])</span>
+<span class="n">add_list</span><span class="p">([</span><span class="s1">&#39;appels&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">])</span>
+<span class="n">add_list</span><span class="p">([</span><span class="s1">&#39;apples&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;bananas&#39;</span><span class="p">])</span>
+<span class="n">add_list</span><span class="p">([</span><span class="s1">&#39;apples&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;bananas&#39;</span><span class="p">,</span><span class="s1">&#39;lemnos&#39;</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>apples
+appels and orange 
+apples, orange  and bananas 
+apples, orange , bananas  and lemnos 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise114:-Random-Lottery-Numbers">Exercise114: Random Lottery Numbers<a class="anchor-link" href="#Exercise114:-Random-Lottery-Numbers">&#182;</a></h1><p>In order to win the top prize in a particular lottery, one must match all 6 numbers on his or her ticket to the 6 numbers between 1 and 49 that are drawn by the lottery organizer.<br>
+Write a program that generates a random selection of 6 numbers for a lottery ticket.<br> 
+Ensure that the 6 numbers selected do not contain any duplicates. Display the numbers in ascending order.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#6.</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">t</span> <span class="o">=</span><span class="nb">set</span><span class="p">()</span>
+<span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">while</span> <span class="n">flag</span><span class="p">:</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">49</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">flag</span>  <span class="o">=</span> <span class="ow">not</span> <span class="n">flag</span>
+        
+<span class="n">t</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{7, 19, 20, 31, 32, 37}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#6. so;</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">rand</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">()</span>
+<span class="n">rand</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="c1"># 0~1 실수 </span>
+<span class="n">rand</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">49</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[36]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>8</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#6. sol</span>
+<span class="n">lotto_list</span> <span class="o">=</span><span class="p">[]</span>
+<span class="n">ball_num</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">while</span> <span class="n">ball_num</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+    <span class="n">new_ball</span> <span class="o">=</span> <span class="n">rand</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">49</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lotto_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">new_ball</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">lotto_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_ball</span><span class="p">)</span>
+        <span class="n">ball_num</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+<span class="n">lotto_list</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="n">lotto_list</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[37]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[2, 10, 18, 24, 25, 27]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise134:UniqueCharacters">Exercise134:UniqueCharacters<a class="anchor-link" href="#Exercise134:UniqueCharacters">&#182;</a></h1><p>Create a program that determines and displays the number of unique characters in a string entered by the user.<br>
+Forexample,Hello, World! has 10 unique characters while zzz has only one unique character.<br> 
+Use a dictionary or set to solve this problem<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#7. </span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input:&#39;</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>input:Hello, World!
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[73]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>10</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise135:Anagrams">Exercise135:Anagrams<a class="anchor-link" href="#Exercise135:Anagrams">&#182;</a></h1><p>Two words are anagrams if they contain all of the same letters, but in a different order.<br>
+Forexample,“evil”and“live”are an agrams because each contains one e,one i,one l,and one v.<br>
+Create ap rogram that reads two strings from the user,determines whether or not they are anagrams, and reports the result.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#8.</span>
+<span class="n">a</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input1:&#39;</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input2:&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="n">b</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="n">d</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">d</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;anagrams&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Nope&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>input1:evil
+input2:live
+anagrams
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
+{% endblock %}

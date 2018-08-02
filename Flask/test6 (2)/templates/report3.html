@@ -1,0 +1,686 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+{% block script %}
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration -->
+{% endblock %}
+
+{%  block styles %}
+<link rel="stylesheet" href="/static/css/report_css.css">
+{% endblock %}
+</head>
+
+<body>
+{% block content %}
+    <i class="fab fa-accusoft"></i>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise61:Average">Exercise61:Average<a class="anchor-link" href="#Exercise61:Average">&#182;</a></h1><p>In this exercise you will create a program that computes the average of a collection of values entered by the user. <br>
+The user will enter 0 as a sentinel value to indicate that no further values will be provided. <br>
+Your program should display an appropriate error message if the ﬁrst value entered by the user is 0</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#1.</span>
+<span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;average!!!&#39;</span><span class="p">)</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input number&#39;</span><span class="p">))</span> 
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no str&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no zero&#39;</span><span class="p">)</span>
+        <span class="k">break</span>
+        
+    <span class="k">else</span><span class="p">:</span>    
+        <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        
+<span class="n">a</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">a</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>average!!!
+input number2
+input number2
+input number0
+no zero
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>2.0</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exercise63:Temperature-Conversion-Table">Exercise63:Temperature Conversion Table<a class="anchor-link" href="#Exercise63:Temperature-Conversion-Table">&#182;</a></h2><p>Write a program that displays a temperature conversion table for degrees Celsius and degrees Fahrenheit.<br>
+The table should include rows for all temperatures between 0 and 100 degrees Celsius that are multiples of 10 degrees Celsius.<br>
+Include appropriate headings on your columns.<Br>
+The formula for converting between degrees Celsius and degrees Fahrenheit can be found on the internet.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2.</span>
+<span class="n">col</span><span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>  <span class="c1">#Celsius</span>
+<span class="n">F</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Fahrenheit</span>
+<span class="c1"># F = °C × 1.8 + 32</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span><span class="n">col</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.8</span> <span class="o">+</span><span class="mi">32</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;col:&quot;</span><span class="p">,</span><span class="n">col</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">end</span> <span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fahrenheit:&quot;</span><span class="p">,</span> <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>col: 0 Fahrenheit: 32.0
+col: 10 Fahrenheit: 50.0
+col: 20 Fahrenheit: 68.0
+col: 30 Fahrenheit: 86.0
+col: 40 Fahrenheit: 104.0
+col: 50 Fahrenheit: 122.0
+col: 60 Fahrenheit: 140.0
+col: 70 Fahrenheit: 158.0
+col: 80 Fahrenheit: 176.0
+col: 90 Fahrenheit: 194.0
+col: 100 Fahrenheit: 212.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise66:ComputeaGradePointAverage">Exercise66:ComputeaGradePointAverage<a class="anchor-link" href="#Exercise66:ComputeaGradePointAverage">&#182;</a></h1><p>Exercise 51 included a table that shows the conversion from letter grades to grade points at a particular academic institution.<br>
+In this exercise you will compute the grade point average of an arbitrary number of letter grades entered by the user. <Br>
+The user will enter a blank line to indicate that all of the grades have been provided. <br>
+For example, if the user enters A, followed by C+, followed by B, followed by a blank line then your program should report a grade point average of 3.1.<br>
+You may ﬁnd your solution to Exercise51 helpful when completing this exercise.<br> 
+Your program does not need to do any error checking. It can assume that each value entered by the user will always be a valid letter grade or a blank line.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#3. </span>
+<span class="c1"># blank out </span>
+<span class="n">t</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A+&#39;</span><span class="p">:</span><span class="mf">4.5</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span><span class="mf">4.0</span><span class="p">,</span><span class="s1">&#39;A-&#39;</span><span class="p">:</span><span class="mf">3.7</span><span class="p">,</span> <span class="s1">&#39;B+&#39;</span><span class="p">:</span><span class="mf">3.5</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span><span class="mf">3.0</span><span class="p">,</span><span class="s1">&#39;B-&#39;</span><span class="p">:</span><span class="mf">2.7</span><span class="p">,</span> <span class="s1">&#39;C+&#39;</span><span class="p">:</span><span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;C-&#39;</span><span class="p">:</span><span class="mf">1.7</span><span class="p">,</span><span class="s1">&#39;D+&#39;</span><span class="p">:</span><span class="mf">1.3</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span><span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+<span class="n">total</span><span class="o">=</span><span class="p">[]</span>
+<span class="nb">sum</span> <span class="o">=</span><span class="mi">0</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">grade</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input:&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;&#39;</span> <span class="ow">is</span> <span class="n">grade</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">if</span> <span class="n">grade</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;대문자 및 잘못 기입 했습니다.(_는 적용이 안됩니다)&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grade</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">total</span><span class="p">:</span>
+    <span class="nb">sum</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    
+<span class="n">a</span> <span class="o">=</span> <span class="nb">sum</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+<span class="n">a</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>input:A
+input:A
+input:
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>4.0</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise67:AdmissionPrice">Exercise67:AdmissionPrice<a class="anchor-link" href="#Exercise67:AdmissionPrice">&#182;</a></h1><p>A particular zoo determines the price of admission based on the age of the guest.<br>
+Guests 2 years of age and less are admitted without charge.<br>
+Children between 3 and 12 years of age cost $14.00.
+Seniors aged 65 years and over cost $18.00.<br>
+Admission for all other guests is $23.00.<br>
+Create a program that begins by reading the ages of all of the guests in a group from the user, with one age entered on each line.<br>
+The user will enter a blank line to indicate that there are no more guests in the group.<br>
+Then your program should display the admission cost for the group with an appropriate message. <br>
+The cost should be displayed using two decimal places.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#4.</span>
+<span class="c1">#ch2 = free </span>
+<span class="c1">#ch3 ~ 12 14.00 </span>
+<span class="c1">#65 over 18.00</span>
+<span class="c1">#ad 23.00</span>
+<span class="c1"># group from the user </span>
+<span class="c1"># age enterd on each line </span>
+<span class="c1"># blank -&gt; out</span>
+<span class="c1"># two decimal </span>
+
+
+<span class="n">ch</span> <span class="o">=</span><span class="p">[]</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ad</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;admission cost&#39;</span><span class="p">)</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input the age :&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;&#39;</span> <span class="ow">is</span> <span class="n">num</span><span class="p">:</span>
+            <span class="k">break</span>
+            
+        <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="k">if</span> <span class="mi">2</span><span class="o">&lt;</span><span class="n">b</span><span class="o">&lt;</span><span class="mi">13</span><span class="p">:</span>
+            <span class="n">ch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="mi">12</span><span class="o">&lt;</span><span class="n">b</span><span class="o">&lt;</span><span class="mi">65</span><span class="p">:</span>
+            <span class="n">ad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">b</span><span class="o">&gt;</span><span class="mi">64</span><span class="p">:</span>
+            <span class="n">ra</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no str&#39;</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">*</span> <span class="mf">14.00</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span> <span class="o">*</span> <span class="mf">18.00</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ad</span><span class="p">)</span> <span class="o">*</span> <span class="mf">23.00</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">total</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">+</span><span class="n">c</span>
+<span class="nb">round</span><span class="p">(</span><span class="n">total</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;cost:&#39;</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
+    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>admission cost
+input the age :1
+input the age :2
+input the age :3
+input the age :12
+input the age :13
+input the age :65
+input the age :
+cost: 69.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise72:Is-a-String-a-Palindrome?">Exercise72:Is a String a Palindrome?<a class="anchor-link" href="#Exercise72:Is-a-String-a-Palindrome?">&#182;</a></h1><p>A string is a palindrome if it is identical forward and backward.<br>
+ For example“anna”, “civic”,“level”and“hannah”are all examples of palindromic words.<br>
+ Write a program that reads a string from the user and uses a loop to determines whether or not it is a palindrome. <br>
+ Display the result, including a meaningful output message.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#5.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;palindrome&#39;</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">[]</span> 
+
+
+<span class="nb">str</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input:&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">%</span><span class="k">2</span> == 0:
+    <span class="n">t</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">t</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no Palindrome&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Palindrome&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">t</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">t</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no Palindrome&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Palindrome&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>palindrome
+input:civic
+Palindrome
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise74:MultiplicationTable">Exercise74:MultiplicationTable<a class="anchor-link" href="#Exercise74:MultiplicationTable">&#182;</a></h1><p>In this exercise you will create a program that displays a multiplication table that shows the products of all combinations of integers from 1times 1up to and including 10 times 10.<br>
+Your multiplication table should include a row of labels across the top of it containing the numbers 1 through 10.<br>
+It should also include labels down the left side consisting of the numbers 1 through 10. <br>
+The expected output from the program is shown below:
+When completing this exercise you will probably ﬁnd it helpful to be able to print out a value without moving down to the next line.<Br> 
+    This can be accomplished by added end="" as the last parameter to your print statement.<br>
+    For example, print("A") will display the letter A and then move down to the next line.<br>
+    The statement print("A", end="") will display the letter A without moving down to the next line,causing the next print statement to display its result on the same line as the letter A.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#6. </span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Multiplication Table&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span><span class="s1">&#39;  &#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%3d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="k">i</span>,end =&quot; &quot;)
+<span class="nb">print</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span><span class="s1">&#39; &#39;</span> <span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">a</span> <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%3d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="k">b</span>,end =&quot; &quot;)
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Multiplication Table
+    1   2   3   4   5   6   7   8   9  10 
+1   1   2   3   4   5   6   7   8   9  10 
+2   2   4   6   8  10  12  14  16  18  20 
+3   3   6   9  12  15  18  21  24  27  30 
+4   4   8  12  16  20  24  28  32  36  40 
+5   5  10  15  20  25  30  35  40  45  50 
+6   6  12  18  24  30  36  42  48  54  60 
+7   7  14  21  28  35  42  49  56  63  70 
+8   8  16  24  32  40  48  56  64  72  80 
+9   9  18  27  36  45  54  63  72  81  90 
+10  10  20  30  40  50  60  70  80  90 100 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise75:Greatest-Common-Divisor">Exercise75:Greatest Common Divisor<a class="anchor-link" href="#Exercise75:Greatest-Common-Divisor">&#182;</a></h1><p>The greates tc ommon divisor of two positive integers,n and m,is the largest number, d, which divides evenly into both n and m. There are several algorithms that can be used to solve this problem, including:
+Initialize d to the smaller of m and n.
+While d does not evenly divide m or d does not evenly divide n do 
+Decrease the value of d by 1 Report d as the greatest common divisor of n and m
+Write a program that reads two positive integers from the user and uses this algorithm to determine and report their greatest common divisor.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;m:&#39;</span><span class="p">))</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;n:&#39;</span><span class="p">))</span>
+<span class="n">d</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">elif</span> <span class="n">d</span><span class="o">%</span><span class="k">m</span> != 0:
+        <span class="n">m</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">d</span><span class="o">%</span><span class="k">n</span> != 0:
+        <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>m:27
+n:6
+6
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise77:Binary-to-Decimal">Exercise77:Binary to Decimal<a class="anchor-link" href="#Exercise77:Binary-to-Decimal">&#182;</a></h1><p>Write a program that converts a binary (base 2) number to decimal (base 10).<Br>
+Your program should begin by reading the binary number from the user as a string.<Br>
+Then it should compute the equivalent decimal number by processing each digit in the binary number.<br>
+Finally,your program should display the equivalent decimal number with an appropriate message</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Binary to Decimal&#39;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Binary : &#39;</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span><span class="nb">bin</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no str&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Binary to Decimal
+Binary : 3
+0b11
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Exercise78:Decimal-to-Binary">Exercise78:Decimal to Binary<a class="anchor-link" href="#Exercise78:Decimal-to-Binary">&#182;</a></h1><p>Write a program that converts a decimal(base10)number to binary(base2).<br>
+Read the decimal number from the user as an integer and then use the division algorithm shown below to perform the conversion.<br>
+When the algorithm completes,result contains the binary representation of the number. Display the result, along with an appropriate message.<br>
+Let result be an empty string <br>
+Let q represent the number to convert<br>
+repeat <br>
+    Set r equal to the remainder when q is divided by 2 <br>
+    Convert r to a string and add it to the beginning of result<br> 
+    Divide q by 2, discarding any remainder, and store the result back into q <br>
+until q is 0.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Decimal to Binary&#39;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Decimal&#39;</span><span class="p">))</span>
+  
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">q</span><span class="o">%</span><span class="k">2</span> is 0:
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;0&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="n">q</span> <span class="o">/=</span> <span class="mi">2</span>
+        
+        
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;숫자를 입력해 주세요.&quot;</span><span class="p">)</span>
+    
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Decimal to Binary
+Decimal3
+11
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
+
+
+{% endblock %}
+</body>
+
+ 
+
+
+</html>

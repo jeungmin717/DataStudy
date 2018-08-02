@@ -1,0 +1,29 @@
+{%  extends 'base.html' %}
+{% block scripts %}
+
+
+            {{sndmap.js}}
+
+
+        {{ moment.include_jquery() }}
+        {{ moment.include_moment() }}
+        {{ moment.lang('ko') }}
+
+{% endblock scripts %}
+{%  block styles %}
+
+    #jeung{
+    width :1000;
+    }
+
+{%  endblock styles %}
+{%-  block content %}
+
+<h1>Flask Google Maps Example</h1>
+
+        <h2> Second map generated in view</h2>
+        <h3> Example for different icons in multiple markers with infoboxes</h3>
+        {{sndmap.html}}
+
+
+{%  endblock content -%}

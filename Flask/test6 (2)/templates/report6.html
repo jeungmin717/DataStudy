@@ -1,0 +1,2208 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+{% block script %}
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration -->
+{% endblock %}
+
+{%  block styles %}
+<link rel="stylesheet" href="/static/css/report_css.css">
+{% endblock %}
+</head>
+
+<body>
+ {% block content %}
+     <i class="fab fa-accusoft"></i>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urllib.error</span> <span class="k">import</span> <span class="n">HTTPError</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;User-agent&quot;</span><span class="p">:</span><span class="s2">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">url_getrequest</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span> <span class="n">params</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;status: &quot;</span><span class="p">,</span><span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="mi">500</span><span class="o">&lt;=</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;=</span><span class="mi">600</span> <span class="ow">and</span> <span class="n">num_retries</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">url_getrequest</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>  <span class="n">num_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">req</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.pythonscraping.com/pages/warandpeace.html&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">html</span><span class="o">=</span> <span class="n">url_getrequest</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span> <span class="n">headers</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>status:  200
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>str</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">doc</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;lxml&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[23]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>bs4.BeautifulSoup</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">div</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">div</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;div id=&#34;text&#34;&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Well, Prince, so Genoa and Lucca are now just family estates of the
+Buonapartes. But I warn you, if you don&#39;t tell me that this means war,
+if you still try to defend the infamies and horrors perpetrated by
+that Antichrist- I really believe he is Antichrist- I will have
+nothing more to do with you and you are no longer my friend, no longer
+my &#39;faithful slave,&#39; as you call yourself! But how do you do? I see
+I have frightened you- sit down and tell me all the news.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+It was in July, 1805, and the speaker was the well-known &lt;span class=&#34;green&#34;&gt;Anna
+Pavlovna Scherer&lt;/span&gt;, maid of honor and favorite of the &lt;span class=&#34;green&#34;&gt;Empress Marya
+Fedorovna&lt;/span&gt;. With these words she greeted &lt;span class=&#34;green&#34;&gt;Prince Vasili Kuragin&lt;/span&gt;, a man
+of high rank and importance, who was the first to arrive at her
+reception. &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt; had had a cough for some days. She was, as
+she said, suffering from la grippe; grippe being then a new word in
+&lt;span class=&#34;green&#34;&gt;St. Petersburg&lt;/span&gt;, used only by the elite.
+&lt;p&gt;&lt;/p&gt;
+All her invitations without exception, written in French, and
+delivered by a scarlet-liveried footman that morning, ran as follows:
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;If you have nothing better to do, Count [or Prince], and if the
+prospect of spending an evening with a poor invalid is not too
+terrible, I shall be very charmed to see you tonight between 7 and 10-
+Annette Scherer.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Heavens! what a virulent attack!&lt;/span&gt;&#34; replied &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;, not in the
+least disconcerted by this reception. He had just entered, wearing
+an embroidered court uniform, knee breeches, and shoes, and had
+stars on his breast and a serene expression on his flat face. He spoke
+in that refined French in which our grandfathers not only spoke but
+thought, and with the gentle, patronizing intonation natural to a
+man of importance who had grown old in society and at court. He went
+up to &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt;, kissed her hand, presenting to her his bald,
+scented, and shining head, and complacently seated himself on the
+sofa.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;First of all, dear friend, tell me how you are. Set your friend&#39;s
+mind at rest,&lt;/span&gt;&#34; said he without altering his tone, beneath the
+politeness and affected sympathy of which indifference and even
+irony could be discerned.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Can one be well while suffering morally? Can one be calm in times
+like these if one has any feeling?&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt;. &#34;&lt;span class=&#34;red&#34;&gt;You are
+staying the whole evening, I hope?&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;And the fete at the English ambassador&#39;s? Today is Wednesday. I
+must put in an appearance there,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;. &#34;&lt;span class=&#34;red&#34;&gt;My daughter is
+coming for me to take me there.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I thought today&#39;s fete had been canceled. I confess all these
+festivities and fireworks are becoming wearisome.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;If they had known that you wished it, the entertainment would
+have been put off,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;, who, like a wound-up clock, by
+force of habit said things he did not even wish to be believed.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Don&#39;t tease! Well, and what has been decided about Novosiltsev&#39;s
+dispatch? You know everything.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;What can one say about it?&lt;/span&gt;&#34; replied &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt; in a cold,
+listless tone. &#34;&lt;span class=&#34;red&#34;&gt;What has been decided? They have decided that
+Buonaparte has burnt his boats, and I believe that we are ready to
+burn ours.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;Prince Vasili&lt;/span&gt; always spoke languidly, like an actor repeating a
+stale part. &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt; Scherer on the contrary, despite her forty
+years, overflowed with animation and impulsiveness. To be an
+enthusiast had become her social vocation and, sometimes even when she
+did not feel like it, she became enthusiastic in order not to
+disappoint the expectations of those who knew her. The subdued smile
+which, though it did not suit her faded features, always played
+round her lips expressed, as in a spoiled child, a continual
+consciousness of her charming defect, which she neither wished, nor
+could, nor considered it necessary, to correct.
+&lt;p&gt;&lt;/p&gt;
+In the midst of a conversation on political matters &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt;
+burst out:
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Oh, don&#39;t speak to me of Austria. Perhaps I don&#39;t understand
+things, but Austria never has wished, and does not wish, for war.
+She is betraying us! Russia alone must save Europe. Our gracious
+sovereign recognizes his high vocation and will be true to it. That is
+the one thing I have faith in! Our good and wonderful sovereign has to
+perform the noblest role on earth, and he is so virtuous and noble
+that God will not forsake him. He will fulfill his vocation and
+crush the hydra of revolution, which has become more terrible than
+ever in the person of this murderer and villain! We alone must
+avenge the blood of the just one.... Whom, I ask you, can we rely
+on?... England with her commercial spirit will not and cannot
+understand the Emperor Alexander&#39;s loftiness of soul. She has
+refused to evacuate Malta. She wanted to find, and still seeks, some
+secret motive in our actions. What answer did Novosiltsev get? None.
+The English have not understood and cannot understand the
+self-abnegation of our Emperor who wants nothing for himself, but only
+desires the good of mankind. And what have they promised? Nothing! And
+what little they have promised they will not perform! Prussia has
+always declared that Buonaparte is invincible, and that all Europe
+is powerless before him.... And I don&#39;t believe a word that Hardenburg
+says, or Haugwitz either. This famous Prussian neutrality is just a
+trap. I have faith only in God and the lofty destiny of our adored
+monarch. He will save Europe!&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+She suddenly paused, smiling at her own impetuosity.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I think,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt; with a smile, &#34;&lt;span class=&#34;red&#34;&gt;that if you had been
+sent instead of our dear &lt;span class=&#34;green&#34;&gt;Wintzingerode&lt;/span&gt; you would have captured the
+&lt;span class=&#34;green&#34;&gt;King of Prussia&lt;/span&gt;&#39;s consent by assault. You are so eloquent. Will you
+give me a cup of tea?&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;In a moment. A propos,&lt;/span&gt;&#34; she added, becoming calm again, &#34;&lt;span class=&#34;red&#34;&gt;I am
+expecting two very interesting men tonight, &lt;span class=&#34;green&#34;&gt;le Vicomte de Mortemart&lt;/span&gt;,
+who is connected with the &lt;span class=&#34;green&#34;&gt;Montmorencys&lt;/span&gt; through the &lt;span class=&#34;green&#34;&gt;Rohans&lt;/span&gt;, one of
+the best French families. He is one of the genuine emigres, the good
+ones. And also the &lt;span class=&#34;green&#34;&gt;Abbe Morio&lt;/span&gt;. Do you know that profound thinker? He
+has been received by &lt;span class=&#34;green&#34;&gt;the Emperor&lt;/span&gt;. Had you heard?&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I shall be delighted to meet them,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;. &#34;&lt;span class=&#34;red&#34;&gt;But tell me,&lt;/span&gt;&#34;
+he added with studied carelessness as if it had only just occurred
+to him, though the question he was about to ask was the chief motive
+of his visit, &#34;&lt;span class=&#34;red&#34;&gt;is it true that the Dowager Empress wants Baron Funke
+to be appointed first secretary at Vienna? The baron by all accounts
+is a poor creature.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;Prince Vasili&lt;/span&gt; wished to obtain this post for his son, but others
+were trying through the &lt;span class=&#34;green&#34;&gt;Dowager Empress Marya Fedorovna&lt;/span&gt; to secure it
+for &lt;span class=&#34;green&#34;&gt;the baron&lt;/span&gt;.
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt; almost closed her eyes to indicate that neither she
+nor anyone else had a right to criticize what &lt;span class=&#34;green&#34;&gt;the Empress&lt;/span&gt; desired or
+was pleased with.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Baron Funke has been recommended to the Dowager Empress by her
+sister,&lt;/span&gt;&#34; was all she said, in a dry and mournful tone.
+&lt;p&gt;&lt;/p&gt;
+As she named &lt;span class=&#34;green&#34;&gt;the Empress&lt;/span&gt;, &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&#39;s&lt;/span&gt; face suddenly assumed an
+expression of profound and sincere devotion and respect mingled with
+sadness, and this occurred every time she mentioned her illustrious
+patroness. She added that &lt;span class=&#34;green&#34;&gt;Her Majesty&lt;/span&gt; had deigned to show &lt;span class=&#34;green&#34;&gt;Baron
+Funke&lt;/span&gt;, and again her face clouded over with sadness.
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;The prince&lt;/span&gt; was silent and looked indifferent. But, with the
+womanly and courtierlike quickness and tact habitual to her, &lt;span class=&#34;green&#34;&gt;Anna
+Pavlovna&lt;/span&gt; wished both to rebuke him (for daring to speak he had done of
+a man recommended to &lt;span class=&#34;green&#34;&gt;the Empress&lt;/span&gt;) and at the same time to console him,
+so she said:
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Now about your family. Do you know that since your daughter came
+out everyone has been enraptured by her? They say she is amazingly
+beautiful.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;The prince&lt;/span&gt; bowed to signify his respect and gratitude.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I often think,&lt;/span&gt;&#34; she continued after a short pause, drawing nearer
+to the prince and smiling amiably at him as if to show that
+political and social topics were ended and the time had come for
+intimate conversation- &#34;&lt;span class=&#34;red&#34;&gt;I often think how unfairly sometimes the
+joys of life are distributed. Why has fate given you two such splendid
+children? I don&#39;t speak of &lt;span class=&#34;green&#34;&gt;Anatole&lt;/span&gt;, your youngest. I don&#39;t like
+him,&lt;/span&gt;&#34; she added in a tone admitting of no rejoinder and raising her
+eyebrows. &#34;&lt;span class=&#34;red&#34;&gt;Two such charming children. And really you appreciate
+them less than anyone, and so you don&#39;t deserve to have them.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+And she smiled her ecstatic smile.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I can&#39;t help it,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;. &#34;&lt;span class=&#34;red&#34;&gt;Lavater would have said I
+lack the bump of paternity.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Don&#39;t joke; I mean to have a serious talk with you. Do you know I
+am dissatisfied with your younger son? Between ourselves&lt;/span&gt;&#34; (and her
+face assumed its melancholy expression), &#34;&lt;span class=&#34;red&#34;&gt;he was mentioned at Her
+Majesty&#39;s and you were pitied....&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;The prince&lt;/span&gt; answered nothing, but she looked at him significantly,
+awaiting a reply. He frowned.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;What would you have me do?&lt;/span&gt;&#34; he said at last. &#34;&lt;span class=&#34;red&#34;&gt;You know I did all
+a father could for their education, and they have both turned out
+fools. Hippolyte is at least a quiet fool, but Anatole is an active
+one. That is the only difference between them.&lt;/span&gt;&#34; He said this smiling
+in a way more natural and animated than usual, so that the wrinkles
+round his mouth very clearly revealed something unexpectedly coarse
+and unpleasant.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;And why are children born to such men as you? If you were not a
+father there would be nothing I could reproach you with,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;Anna
+Pavlovna&lt;/span&gt;, looking up pensively.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I am your faithful slave and to you alone I can confess that my
+children are the bane of my life. It is the cross I have to bear. That
+is how I explain it to myself. It can&#39;t be helped!&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+He said no more, but expressed his resignation to cruel fate by a
+gesture. &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt; meditated.
+&lt;/div&gt;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">doc</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[25]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+.green{
+	color:#55ff55;
+}
+.red{
+	color:#ff5555;
+}
+#text{
+	width:50%;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;War and Peace&lt;/h1&gt;
+&lt;h2&gt;Chapter 1&lt;/h2&gt;
+&lt;div id=&#34;text&#34;&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Well, Prince, so Genoa and Lucca are now just family estates of the
+Buonapartes. But I warn you, if you don&#39;t tell me that this means war,
+if you still try to defend the infamies and horrors perpetrated by
+that Antichrist- I really believe he is Antichrist- I will have
+nothing more to do with you and you are no longer my friend, no longer
+my &#39;faithful slave,&#39; as you call yourself! But how do you do? I see
+I have frightened you- sit down and tell me all the news.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+It was in July, 1805, and the speaker was the well-known &lt;span class=&#34;green&#34;&gt;Anna
+Pavlovna Scherer&lt;/span&gt;, maid of honor and favorite of the &lt;span class=&#34;green&#34;&gt;Empress Marya
+Fedorovna&lt;/span&gt;. With these words she greeted &lt;span class=&#34;green&#34;&gt;Prince Vasili Kuragin&lt;/span&gt;, a man
+of high rank and importance, who was the first to arrive at her
+reception. &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt; had had a cough for some days. She was, as
+she said, suffering from la grippe; grippe being then a new word in
+&lt;span class=&#34;green&#34;&gt;St. Petersburg&lt;/span&gt;, used only by the elite.
+&lt;p&gt;&lt;/p&gt;
+All her invitations without exception, written in French, and
+delivered by a scarlet-liveried footman that morning, ran as follows:
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;If you have nothing better to do, Count [or Prince], and if the
+prospect of spending an evening with a poor invalid is not too
+terrible, I shall be very charmed to see you tonight between 7 and 10-
+Annette Scherer.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Heavens! what a virulent attack!&lt;/span&gt;&#34; replied &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;, not in the
+least disconcerted by this reception. He had just entered, wearing
+an embroidered court uniform, knee breeches, and shoes, and had
+stars on his breast and a serene expression on his flat face. He spoke
+in that refined French in which our grandfathers not only spoke but
+thought, and with the gentle, patronizing intonation natural to a
+man of importance who had grown old in society and at court. He went
+up to &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt;, kissed her hand, presenting to her his bald,
+scented, and shining head, and complacently seated himself on the
+sofa.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;First of all, dear friend, tell me how you are. Set your friend&#39;s
+mind at rest,&lt;/span&gt;&#34; said he without altering his tone, beneath the
+politeness and affected sympathy of which indifference and even
+irony could be discerned.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Can one be well while suffering morally? Can one be calm in times
+like these if one has any feeling?&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt;. &#34;&lt;span class=&#34;red&#34;&gt;You are
+staying the whole evening, I hope?&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;And the fete at the English ambassador&#39;s? Today is Wednesday. I
+must put in an appearance there,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;. &#34;&lt;span class=&#34;red&#34;&gt;My daughter is
+coming for me to take me there.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I thought today&#39;s fete had been canceled. I confess all these
+festivities and fireworks are becoming wearisome.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;If they had known that you wished it, the entertainment would
+have been put off,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;, who, like a wound-up clock, by
+force of habit said things he did not even wish to be believed.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Don&#39;t tease! Well, and what has been decided about Novosiltsev&#39;s
+dispatch? You know everything.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;What can one say about it?&lt;/span&gt;&#34; replied &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt; in a cold,
+listless tone. &#34;&lt;span class=&#34;red&#34;&gt;What has been decided? They have decided that
+Buonaparte has burnt his boats, and I believe that we are ready to
+burn ours.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;Prince Vasili&lt;/span&gt; always spoke languidly, like an actor repeating a
+stale part. &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt; Scherer on the contrary, despite her forty
+years, overflowed with animation and impulsiveness. To be an
+enthusiast had become her social vocation and, sometimes even when she
+did not feel like it, she became enthusiastic in order not to
+disappoint the expectations of those who knew her. The subdued smile
+which, though it did not suit her faded features, always played
+round her lips expressed, as in a spoiled child, a continual
+consciousness of her charming defect, which she neither wished, nor
+could, nor considered it necessary, to correct.
+&lt;p&gt;&lt;/p&gt;
+In the midst of a conversation on political matters &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt;
+burst out:
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Oh, don&#39;t speak to me of Austria. Perhaps I don&#39;t understand
+things, but Austria never has wished, and does not wish, for war.
+She is betraying us! Russia alone must save Europe. Our gracious
+sovereign recognizes his high vocation and will be true to it. That is
+the one thing I have faith in! Our good and wonderful sovereign has to
+perform the noblest role on earth, and he is so virtuous and noble
+that God will not forsake him. He will fulfill his vocation and
+crush the hydra of revolution, which has become more terrible than
+ever in the person of this murderer and villain! We alone must
+avenge the blood of the just one.... Whom, I ask you, can we rely
+on?... England with her commercial spirit will not and cannot
+understand the Emperor Alexander&#39;s loftiness of soul. She has
+refused to evacuate Malta. She wanted to find, and still seeks, some
+secret motive in our actions. What answer did Novosiltsev get? None.
+The English have not understood and cannot understand the
+self-abnegation of our Emperor who wants nothing for himself, but only
+desires the good of mankind. And what have they promised? Nothing! And
+what little they have promised they will not perform! Prussia has
+always declared that Buonaparte is invincible, and that all Europe
+is powerless before him.... And I don&#39;t believe a word that Hardenburg
+says, or Haugwitz either. This famous Prussian neutrality is just a
+trap. I have faith only in God and the lofty destiny of our adored
+monarch. He will save Europe!&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+She suddenly paused, smiling at her own impetuosity.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I think,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt; with a smile, &#34;&lt;span class=&#34;red&#34;&gt;that if you had been
+sent instead of our dear &lt;span class=&#34;green&#34;&gt;Wintzingerode&lt;/span&gt; you would have captured the
+&lt;span class=&#34;green&#34;&gt;King of Prussia&lt;/span&gt;&#39;s consent by assault. You are so eloquent. Will you
+give me a cup of tea?&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;In a moment. A propos,&lt;/span&gt;&#34; she added, becoming calm again, &#34;&lt;span class=&#34;red&#34;&gt;I am
+expecting two very interesting men tonight, &lt;span class=&#34;green&#34;&gt;le Vicomte de Mortemart&lt;/span&gt;,
+who is connected with the &lt;span class=&#34;green&#34;&gt;Montmorencys&lt;/span&gt; through the &lt;span class=&#34;green&#34;&gt;Rohans&lt;/span&gt;, one of
+the best French families. He is one of the genuine emigres, the good
+ones. And also the &lt;span class=&#34;green&#34;&gt;Abbe Morio&lt;/span&gt;. Do you know that profound thinker? He
+has been received by &lt;span class=&#34;green&#34;&gt;the Emperor&lt;/span&gt;. Had you heard?&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I shall be delighted to meet them,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;. &#34;&lt;span class=&#34;red&#34;&gt;But tell me,&lt;/span&gt;&#34;
+he added with studied carelessness as if it had only just occurred
+to him, though the question he was about to ask was the chief motive
+of his visit, &#34;&lt;span class=&#34;red&#34;&gt;is it true that the Dowager Empress wants Baron Funke
+to be appointed first secretary at Vienna? The baron by all accounts
+is a poor creature.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;Prince Vasili&lt;/span&gt; wished to obtain this post for his son, but others
+were trying through the &lt;span class=&#34;green&#34;&gt;Dowager Empress Marya Fedorovna&lt;/span&gt; to secure it
+for &lt;span class=&#34;green&#34;&gt;the baron&lt;/span&gt;.
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt; almost closed her eyes to indicate that neither she
+nor anyone else had a right to criticize what &lt;span class=&#34;green&#34;&gt;the Empress&lt;/span&gt; desired or
+was pleased with.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Baron Funke has been recommended to the Dowager Empress by her
+sister,&lt;/span&gt;&#34; was all she said, in a dry and mournful tone.
+&lt;p&gt;&lt;/p&gt;
+As she named &lt;span class=&#34;green&#34;&gt;the Empress&lt;/span&gt;, &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&#39;s&lt;/span&gt; face suddenly assumed an
+expression of profound and sincere devotion and respect mingled with
+sadness, and this occurred every time she mentioned her illustrious
+patroness. She added that &lt;span class=&#34;green&#34;&gt;Her Majesty&lt;/span&gt; had deigned to show &lt;span class=&#34;green&#34;&gt;Baron
+Funke&lt;/span&gt;, and again her face clouded over with sadness.
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;The prince&lt;/span&gt; was silent and looked indifferent. But, with the
+womanly and courtierlike quickness and tact habitual to her, &lt;span class=&#34;green&#34;&gt;Anna
+Pavlovna&lt;/span&gt; wished both to rebuke him (for daring to speak he had done of
+a man recommended to &lt;span class=&#34;green&#34;&gt;the Empress&lt;/span&gt;) and at the same time to console him,
+so she said:
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Now about your family. Do you know that since your daughter came
+out everyone has been enraptured by her? They say she is amazingly
+beautiful.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;The prince&lt;/span&gt; bowed to signify his respect and gratitude.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I often think,&lt;/span&gt;&#34; she continued after a short pause, drawing nearer
+to the prince and smiling amiably at him as if to show that
+political and social topics were ended and the time had come for
+intimate conversation- &#34;&lt;span class=&#34;red&#34;&gt;I often think how unfairly sometimes the
+joys of life are distributed. Why has fate given you two such splendid
+children? I don&#39;t speak of &lt;span class=&#34;green&#34;&gt;Anatole&lt;/span&gt;, your youngest. I don&#39;t like
+him,&lt;/span&gt;&#34; she added in a tone admitting of no rejoinder and raising her
+eyebrows. &#34;&lt;span class=&#34;red&#34;&gt;Two such charming children. And really you appreciate
+them less than anyone, and so you don&#39;t deserve to have them.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+And she smiled her ecstatic smile.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I can&#39;t help it,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;the prince&lt;/span&gt;. &#34;&lt;span class=&#34;red&#34;&gt;Lavater would have said I
+lack the bump of paternity.&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;Don&#39;t joke; I mean to have a serious talk with you. Do you know I
+am dissatisfied with your younger son? Between ourselves&lt;/span&gt;&#34; (and her
+face assumed its melancholy expression), &#34;&lt;span class=&#34;red&#34;&gt;he was mentioned at Her
+Majesty&#39;s and you were pitied....&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+&lt;span class=&#34;green&#34;&gt;The prince&lt;/span&gt; answered nothing, but she looked at him significantly,
+awaiting a reply. He frowned.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;What would you have me do?&lt;/span&gt;&#34; he said at last. &#34;&lt;span class=&#34;red&#34;&gt;You know I did all
+a father could for their education, and they have both turned out
+fools. Hippolyte is at least a quiet fool, but Anatole is an active
+one. That is the only difference between them.&lt;/span&gt;&#34; He said this smiling
+in a way more natural and animated than usual, so that the wrinkles
+round his mouth very clearly revealed something unexpectedly coarse
+and unpleasant.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;And why are children born to such men as you? If you were not a
+father there would be nothing I could reproach you with,&lt;/span&gt;&#34; said &lt;span class=&#34;green&#34;&gt;Anna
+Pavlovna&lt;/span&gt;, looking up pensively.
+&lt;p&gt;&lt;/p&gt;
+&#34;&lt;span class=&#34;red&#34;&gt;I am your faithful slave and to you alone I can confess that my
+children are the bane of my life. It is the cross I have to bear. That
+is how I explain it to myself. It can&#39;t be helped!&lt;/span&gt;&#34;
+&lt;p&gt;&lt;/p&gt;
+He said no more, but expressed his resignation to cruel fate by a
+gesture. &lt;span class=&#34;green&#34;&gt;Anna Pavlovna&lt;/span&gt; meditated.
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#tagList = doc.find_all(&quot;span&quot;, class=&quot;green&quot;)</span>
+<span class="n">tagList</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;span&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tagList</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tagList</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The tag name : &quot;</span><span class="p">,</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;The text name : &quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>41
+The tag name :  span The text name :  Anna
+Pavlovna Scherer
+The tag name :  span The text name :  Empress Marya
+Fedorovna
+The tag name :  span The text name :  Prince Vasili Kuragin
+The tag name :  span The text name :  Anna Pavlovna
+The tag name :  span The text name :  St. Petersburg
+The tag name :  span The text name :  the prince
+The tag name :  span The text name :  Anna Pavlovna
+The tag name :  span The text name :  Anna Pavlovna
+The tag name :  span The text name :  the prince
+The tag name :  span The text name :  the prince
+The tag name :  span The text name :  the prince
+The tag name :  span The text name :  Prince Vasili
+The tag name :  span The text name :  Anna Pavlovna
+The tag name :  span The text name :  Anna Pavlovna
+The tag name :  span The text name :  the prince
+The tag name :  span The text name :  Wintzingerode
+The tag name :  span The text name :  King of Prussia
+The tag name :  span The text name :  le Vicomte de Mortemart
+The tag name :  span The text name :  Montmorencys
+The tag name :  span The text name :  Rohans
+The tag name :  span The text name :  Abbe Morio
+The tag name :  span The text name :  the Emperor
+The tag name :  span The text name :  the prince
+The tag name :  span The text name :  Prince Vasili
+The tag name :  span The text name :  Dowager Empress Marya Fedorovna
+The tag name :  span The text name :  the baron
+The tag name :  span The text name :  Anna Pavlovna
+The tag name :  span The text name :  the Empress
+The tag name :  span The text name :  the Empress
+The tag name :  span The text name :  Anna Pavlovna&#39;s
+The tag name :  span The text name :  Her Majesty
+The tag name :  span The text name :  Baron
+Funke
+The tag name :  span The text name :  The prince
+The tag name :  span The text name :  Anna
+Pavlovna
+The tag name :  span The text name :  the Empress
+The tag name :  span The text name :  The prince
+The tag name :  span The text name :  Anatole
+The tag name :  span The text name :  the prince
+The tag name :  span The text name :  The prince
+The tag name :  span The text name :  Anna
+Pavlovna
+The tag name :  span The text name :  Anna Pavlovna
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tagList</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;span&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span><span class="s2">&quot;green&quot;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tagList</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>41
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tagList</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Anna
+Pavlovna Scherer
+Empress Marya
+Fedorovna
+Prince Vasili Kuragin
+Anna Pavlovna
+St. Petersburg
+the prince
+Anna Pavlovna
+Anna Pavlovna
+the prince
+the prince
+the prince
+Prince Vasili
+Anna Pavlovna
+Anna Pavlovna
+the prince
+Wintzingerode
+King of Prussia
+le Vicomte de Mortemart
+Montmorencys
+Rohans
+Abbe Morio
+the Emperor
+the prince
+Prince Vasili
+Dowager Empress Marya Fedorovna
+the baron
+Anna Pavlovna
+the Empress
+the Empress
+Anna Pavlovna&#39;s
+Her Majesty
+Baron
+Funke
+The prince
+Anna
+Pavlovna
+the Empress
+The prince
+Anatole
+the prince
+The prince
+Anna
+Pavlovna
+Anna Pavlovna
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.pythonscraping.com/pages/page3.html&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">html2</span> <span class="o">=</span> <span class="n">url_getrequest</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span> <span class="n">headers</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>status:  200
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">html2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[47]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>requests.models.Response</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xml</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html2</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;lxml&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xml1</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">div</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xml1</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>11
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[85]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xml2</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[86]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xml2</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>3
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">xml2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">xml2</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;bs4.element.ResultSet&#39;&gt;
+&lt;class &#39;bs4.element.Tag&#39;&gt;
+&lt;class &#39;bs4.element.Tag&#39;&gt;
+&lt;class &#39;bs4.element.Tag&#39;&gt;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">node</span> <span class="o">=</span> <span class="n">xml1</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;footer&quot;</span><span class="p">})</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">node</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[89]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;div id=&#34;footer&#34;&gt;
+© Totally Normal Gifts, Inc. &lt;br/&gt;
++234 (617) 863-0736
+&lt;/div&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">find_parent</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parent</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[69]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;div id=&#34;wrapper&#34;&gt;
+&lt;img src=&#34;../img/gifts/logo.jpg&#34; style=&#34;float:left;&#34;/&gt;
+&lt;h1&gt;Totally Normal Gifts&lt;/h1&gt;
+&lt;div id=&#34;content&#34;&gt;Here is a collection of totally normal, totally reasonable gifts that your friends are sure to love! Our collection is
+hand-curated by well-paid, free-range Tibetan monks.&lt;p&gt;
+We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+123 Main St.&lt;br/&gt;
+Abuja, Nigeria
+We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;&lt;/div&gt;
+&lt;table id=&#34;giftList&#34;&gt;
+&lt;tr&gt;&lt;th&gt;
+Item Title
+&lt;/th&gt;&lt;th&gt;
+Description
+&lt;/th&gt;&lt;th&gt;
+Cost
+&lt;/th&gt;&lt;th&gt;
+Image
+&lt;/th&gt;&lt;/tr&gt;
+&lt;tr class=&#34;gift&#34; id=&#34;gift1&#34;&gt;&lt;td&gt;
+Vegetable Basket
+&lt;/td&gt;&lt;td&gt;
+This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+&lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+&lt;/td&gt;&lt;td&gt;
+$15.00
+&lt;/td&gt;&lt;td&gt;
+&lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&#34;gift&#34; id=&#34;gift2&#34;&gt;&lt;td&gt;
+Russian Nesting Dolls
+&lt;/td&gt;&lt;td&gt;
+Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+&lt;/td&gt;&lt;td&gt;
+$10,000.52
+&lt;/td&gt;&lt;td&gt;
+&lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&#34;gift&#34; id=&#34;gift3&#34;&gt;&lt;td&gt;
+Fish Painting
+&lt;/td&gt;&lt;td&gt;
+If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+&lt;/td&gt;&lt;td&gt;
+$10,005.00
+&lt;/td&gt;&lt;td&gt;
+&lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&#34;gift&#34; id=&#34;gift4&#34;&gt;&lt;td&gt;
+Dead Parrot
+&lt;/td&gt;&lt;td&gt;
+This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+&lt;/td&gt;&lt;td&gt;
+$0.50
+&lt;/td&gt;&lt;td&gt;
+&lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&#34;gift&#34; id=&#34;gift5&#34;&gt;&lt;td&gt;
+Mystery Box
+&lt;/td&gt;&lt;td&gt;
+If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+&lt;/td&gt;&lt;td&gt;
+$1.50
+&lt;/td&gt;&lt;td&gt;
+&lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;div id=&#34;footer&#34;&gt;
+© Totally Normal Gifts, Inc. &lt;br/&gt;
++234 (617) 863-0736
+&lt;/div&gt;
+&lt;/div&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parents</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">find_parents</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">parents</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[70]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&lt;div id=&#34;wrapper&#34;&gt;
+ &lt;img src=&#34;../img/gifts/logo.jpg&#34; style=&#34;float:left;&#34;/&gt;
+ &lt;h1&gt;Totally Normal Gifts&lt;/h1&gt;
+ &lt;div id=&#34;content&#34;&gt;Here is a collection of totally normal, totally reasonable gifts that your friends are sure to love! Our collection is
+ hand-curated by well-paid, free-range Tibetan monks.&lt;p&gt;
+ We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+ 123 Main St.&lt;br/&gt;
+ Abuja, Nigeria
+ We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;&lt;/div&gt;
+ &lt;table id=&#34;giftList&#34;&gt;
+ &lt;tr&gt;&lt;th&gt;
+ Item Title
+ &lt;/th&gt;&lt;th&gt;
+ Description
+ &lt;/th&gt;&lt;th&gt;
+ Cost
+ &lt;/th&gt;&lt;th&gt;
+ Image
+ &lt;/th&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift1&#34;&gt;&lt;td&gt;
+ Vegetable Basket
+ &lt;/td&gt;&lt;td&gt;
+ This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $15.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift2&#34;&gt;&lt;td&gt;
+ Russian Nesting Dolls
+ &lt;/td&gt;&lt;td&gt;
+ Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,000.52
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift3&#34;&gt;&lt;td&gt;
+ Fish Painting
+ &lt;/td&gt;&lt;td&gt;
+ If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,005.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift4&#34;&gt;&lt;td&gt;
+ Dead Parrot
+ &lt;/td&gt;&lt;td&gt;
+ This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $0.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift5&#34;&gt;&lt;td&gt;
+ Mystery Box
+ &lt;/td&gt;&lt;td&gt;
+ If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $1.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;/table&gt;
+ &lt;div id=&#34;footer&#34;&gt;
+ © Totally Normal Gifts, Inc. &lt;br/&gt;
+ +234 (617) 863-0736
+ &lt;/div&gt;
+ &lt;/div&gt;, &lt;body&gt;
+ &lt;div id=&#34;wrapper&#34;&gt;
+ &lt;img src=&#34;../img/gifts/logo.jpg&#34; style=&#34;float:left;&#34;/&gt;
+ &lt;h1&gt;Totally Normal Gifts&lt;/h1&gt;
+ &lt;div id=&#34;content&#34;&gt;Here is a collection of totally normal, totally reasonable gifts that your friends are sure to love! Our collection is
+ hand-curated by well-paid, free-range Tibetan monks.&lt;p&gt;
+ We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+ 123 Main St.&lt;br/&gt;
+ Abuja, Nigeria
+ We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;&lt;/div&gt;
+ &lt;table id=&#34;giftList&#34;&gt;
+ &lt;tr&gt;&lt;th&gt;
+ Item Title
+ &lt;/th&gt;&lt;th&gt;
+ Description
+ &lt;/th&gt;&lt;th&gt;
+ Cost
+ &lt;/th&gt;&lt;th&gt;
+ Image
+ &lt;/th&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift1&#34;&gt;&lt;td&gt;
+ Vegetable Basket
+ &lt;/td&gt;&lt;td&gt;
+ This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $15.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift2&#34;&gt;&lt;td&gt;
+ Russian Nesting Dolls
+ &lt;/td&gt;&lt;td&gt;
+ Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,000.52
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift3&#34;&gt;&lt;td&gt;
+ Fish Painting
+ &lt;/td&gt;&lt;td&gt;
+ If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,005.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift4&#34;&gt;&lt;td&gt;
+ Dead Parrot
+ &lt;/td&gt;&lt;td&gt;
+ This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $0.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift5&#34;&gt;&lt;td&gt;
+ Mystery Box
+ &lt;/td&gt;&lt;td&gt;
+ If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $1.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;/table&gt;
+ &lt;div id=&#34;footer&#34;&gt;
+ © Totally Normal Gifts, Inc. &lt;br/&gt;
+ +234 (617) 863-0736
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/body&gt;, &lt;html&gt;
+ &lt;head&gt;
+ &lt;style&gt;
+ img{
+ 	width:75px;
+ }
+ table{
+ 	width:50%;
+ }
+ td{
+ 	margin:10px;
+ 	padding:10px;
+ }
+ .wrapper{
+ 	width:800px;
+ }
+ .excitingNote{
+ 	font-style:italic;
+ 	font-weight:bold;
+ }
+ &lt;/style&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;div id=&#34;wrapper&#34;&gt;
+ &lt;img src=&#34;../img/gifts/logo.jpg&#34; style=&#34;float:left;&#34;/&gt;
+ &lt;h1&gt;Totally Normal Gifts&lt;/h1&gt;
+ &lt;div id=&#34;content&#34;&gt;Here is a collection of totally normal, totally reasonable gifts that your friends are sure to love! Our collection is
+ hand-curated by well-paid, free-range Tibetan monks.&lt;p&gt;
+ We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+ 123 Main St.&lt;br/&gt;
+ Abuja, Nigeria
+ We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;&lt;/div&gt;
+ &lt;table id=&#34;giftList&#34;&gt;
+ &lt;tr&gt;&lt;th&gt;
+ Item Title
+ &lt;/th&gt;&lt;th&gt;
+ Description
+ &lt;/th&gt;&lt;th&gt;
+ Cost
+ &lt;/th&gt;&lt;th&gt;
+ Image
+ &lt;/th&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift1&#34;&gt;&lt;td&gt;
+ Vegetable Basket
+ &lt;/td&gt;&lt;td&gt;
+ This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $15.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift2&#34;&gt;&lt;td&gt;
+ Russian Nesting Dolls
+ &lt;/td&gt;&lt;td&gt;
+ Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,000.52
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift3&#34;&gt;&lt;td&gt;
+ Fish Painting
+ &lt;/td&gt;&lt;td&gt;
+ If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,005.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift4&#34;&gt;&lt;td&gt;
+ Dead Parrot
+ &lt;/td&gt;&lt;td&gt;
+ This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $0.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift5&#34;&gt;&lt;td&gt;
+ Mystery Box
+ &lt;/td&gt;&lt;td&gt;
+ If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $1.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;/table&gt;
+ &lt;div id=&#34;footer&#34;&gt;
+ © Totally Normal Gifts, Inc. &lt;br/&gt;
+ +234 (617) 863-0736
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/body&gt;
+ &lt;/html&gt;, &lt;html&gt;
+ &lt;head&gt;
+ &lt;style&gt;
+ img{
+ 	width:75px;
+ }
+ table{
+ 	width:50%;
+ }
+ td{
+ 	margin:10px;
+ 	padding:10px;
+ }
+ .wrapper{
+ 	width:800px;
+ }
+ .excitingNote{
+ 	font-style:italic;
+ 	font-weight:bold;
+ }
+ &lt;/style&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;div id=&#34;wrapper&#34;&gt;
+ &lt;img src=&#34;../img/gifts/logo.jpg&#34; style=&#34;float:left;&#34;/&gt;
+ &lt;h1&gt;Totally Normal Gifts&lt;/h1&gt;
+ &lt;div id=&#34;content&#34;&gt;Here is a collection of totally normal, totally reasonable gifts that your friends are sure to love! Our collection is
+ hand-curated by well-paid, free-range Tibetan monks.&lt;p&gt;
+ We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+ 123 Main St.&lt;br/&gt;
+ Abuja, Nigeria
+ We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;&lt;/div&gt;
+ &lt;table id=&#34;giftList&#34;&gt;
+ &lt;tr&gt;&lt;th&gt;
+ Item Title
+ &lt;/th&gt;&lt;th&gt;
+ Description
+ &lt;/th&gt;&lt;th&gt;
+ Cost
+ &lt;/th&gt;&lt;th&gt;
+ Image
+ &lt;/th&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift1&#34;&gt;&lt;td&gt;
+ Vegetable Basket
+ &lt;/td&gt;&lt;td&gt;
+ This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $15.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift2&#34;&gt;&lt;td&gt;
+ Russian Nesting Dolls
+ &lt;/td&gt;&lt;td&gt;
+ Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,000.52
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift3&#34;&gt;&lt;td&gt;
+ Fish Painting
+ &lt;/td&gt;&lt;td&gt;
+ If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,005.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift4&#34;&gt;&lt;td&gt;
+ Dead Parrot
+ &lt;/td&gt;&lt;td&gt;
+ This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $0.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift5&#34;&gt;&lt;td&gt;
+ Mystery Box
+ &lt;/td&gt;&lt;td&gt;
+ If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $1.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;/table&gt;
+ &lt;div id=&#34;footer&#34;&gt;
+ © Totally Normal Gifts, Inc. &lt;br/&gt;
+ +234 (617) 863-0736
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/body&gt;
+ &lt;/html&gt;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">children</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">recursive</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">children</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[72]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&lt;img src=&#34;../img/gifts/logo.jpg&#34; style=&#34;float:left;&#34;/&gt;,
+ &lt;h1&gt;Totally Normal Gifts&lt;/h1&gt;,
+ &lt;div id=&#34;content&#34;&gt;Here is a collection of totally normal, totally reasonable gifts that your friends are sure to love! Our collection is
+ hand-curated by well-paid, free-range Tibetan monks.&lt;p&gt;
+ We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+ 123 Main St.&lt;br/&gt;
+ Abuja, Nigeria
+ We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;&lt;/div&gt;,
+ &lt;table id=&#34;giftList&#34;&gt;
+ &lt;tr&gt;&lt;th&gt;
+ Item Title
+ &lt;/th&gt;&lt;th&gt;
+ Description
+ &lt;/th&gt;&lt;th&gt;
+ Cost
+ &lt;/th&gt;&lt;th&gt;
+ Image
+ &lt;/th&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift1&#34;&gt;&lt;td&gt;
+ Vegetable Basket
+ &lt;/td&gt;&lt;td&gt;
+ This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $15.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift2&#34;&gt;&lt;td&gt;
+ Russian Nesting Dolls
+ &lt;/td&gt;&lt;td&gt;
+ Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,000.52
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift3&#34;&gt;&lt;td&gt;
+ Fish Painting
+ &lt;/td&gt;&lt;td&gt;
+ If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,005.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift4&#34;&gt;&lt;td&gt;
+ Dead Parrot
+ &lt;/td&gt;&lt;td&gt;
+ This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $0.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift5&#34;&gt;&lt;td&gt;
+ Mystery Box
+ &lt;/td&gt;&lt;td&gt;
+ If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $1.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;/table&gt;,
+ &lt;div id=&#34;footer&#34;&gt;
+ © Totally Normal Gifts, Inc. &lt;br/&gt;
+ +234 (617) 863-0736
+ &lt;/div&gt;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">descendants</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">find_all</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">descendants</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[73]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&lt;img src=&#34;../img/gifts/logo.jpg&#34; style=&#34;float:left;&#34;/&gt;,
+ &lt;h1&gt;Totally Normal Gifts&lt;/h1&gt;,
+ &lt;div id=&#34;content&#34;&gt;Here is a collection of totally normal, totally reasonable gifts that your friends are sure to love! Our collection is
+ hand-curated by well-paid, free-range Tibetan monks.&lt;p&gt;
+ We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+ 123 Main St.&lt;br/&gt;
+ Abuja, Nigeria
+ We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;&lt;/div&gt;,
+ &lt;p&gt;
+ We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+ 123 Main St.&lt;br/&gt;
+ Abuja, Nigeria
+ We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;,
+ &lt;br/&gt;,
+ &lt;br/&gt;,
+ &lt;table id=&#34;giftList&#34;&gt;
+ &lt;tr&gt;&lt;th&gt;
+ Item Title
+ &lt;/th&gt;&lt;th&gt;
+ Description
+ &lt;/th&gt;&lt;th&gt;
+ Cost
+ &lt;/th&gt;&lt;th&gt;
+ Image
+ &lt;/th&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift1&#34;&gt;&lt;td&gt;
+ Vegetable Basket
+ &lt;/td&gt;&lt;td&gt;
+ This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $15.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift2&#34;&gt;&lt;td&gt;
+ Russian Nesting Dolls
+ &lt;/td&gt;&lt;td&gt;
+ Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,000.52
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift3&#34;&gt;&lt;td&gt;
+ Fish Painting
+ &lt;/td&gt;&lt;td&gt;
+ If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,005.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift4&#34;&gt;&lt;td&gt;
+ Dead Parrot
+ &lt;/td&gt;&lt;td&gt;
+ This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $0.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr class=&#34;gift&#34; id=&#34;gift5&#34;&gt;&lt;td&gt;
+ Mystery Box
+ &lt;/td&gt;&lt;td&gt;
+ If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $1.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;/table&gt;,
+ &lt;tr&gt;&lt;th&gt;
+ Item Title
+ &lt;/th&gt;&lt;th&gt;
+ Description
+ &lt;/th&gt;&lt;th&gt;
+ Cost
+ &lt;/th&gt;&lt;th&gt;
+ Image
+ &lt;/th&gt;&lt;/tr&gt;,
+ &lt;th&gt;
+ Item Title
+ &lt;/th&gt;,
+ &lt;th&gt;
+ Description
+ &lt;/th&gt;,
+ &lt;th&gt;
+ Cost
+ &lt;/th&gt;,
+ &lt;th&gt;
+ Image
+ &lt;/th&gt;,
+ &lt;tr class=&#34;gift&#34; id=&#34;gift1&#34;&gt;&lt;td&gt;
+ Vegetable Basket
+ &lt;/td&gt;&lt;td&gt;
+ This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $15.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;,
+ &lt;td&gt;
+ Vegetable Basket
+ &lt;/td&gt;,
+ &lt;td&gt;
+ This vegetable basket is the perfect gift for your health conscious (or overweight) friends!
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;
+ &lt;/td&gt;,
+ &lt;span class=&#34;excitingNote&#34;&gt;Now with super-colorful bell peppers!&lt;/span&gt;,
+ &lt;td&gt;
+ $15.00
+ &lt;/td&gt;,
+ &lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;
+ &lt;/td&gt;,
+ &lt;img src=&#34;../img/gifts/img1.jpg&#34;/&gt;,
+ &lt;tr class=&#34;gift&#34; id=&#34;gift2&#34;&gt;&lt;td&gt;
+ Russian Nesting Dolls
+ &lt;/td&gt;&lt;td&gt;
+ Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,000.52
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;,
+ &lt;td&gt;
+ Russian Nesting Dolls
+ &lt;/td&gt;,
+ &lt;td&gt;
+ Hand-painted by trained monkeys, these exquisite dolls are priceless! And by &#34;priceless,&#34; we mean &#34;extremely expensive&#34;! &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;
+ &lt;/td&gt;,
+ &lt;span class=&#34;excitingNote&#34;&gt;8 entire dolls per set! Octuple the presents!&lt;/span&gt;,
+ &lt;td&gt;
+ $10,000.52
+ &lt;/td&gt;,
+ &lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;
+ &lt;/td&gt;,
+ &lt;img src=&#34;../img/gifts/img2.jpg&#34;/&gt;,
+ &lt;tr class=&#34;gift&#34; id=&#34;gift3&#34;&gt;&lt;td&gt;
+ Fish Painting
+ &lt;/td&gt;&lt;td&gt;
+ If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $10,005.00
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;,
+ &lt;td&gt;
+ Fish Painting
+ &lt;/td&gt;,
+ &lt;td&gt;
+ If something seems fishy about this painting, it&#39;s because it&#39;s a fish! &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;
+ &lt;/td&gt;,
+ &lt;span class=&#34;excitingNote&#34;&gt;Also hand-painted by trained monkeys!&lt;/span&gt;,
+ &lt;td&gt;
+ $10,005.00
+ &lt;/td&gt;,
+ &lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;
+ &lt;/td&gt;,
+ &lt;img src=&#34;../img/gifts/img3.jpg&#34;/&gt;,
+ &lt;tr class=&#34;gift&#34; id=&#34;gift4&#34;&gt;&lt;td&gt;
+ Dead Parrot
+ &lt;/td&gt;&lt;td&gt;
+ This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $0.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;,
+ &lt;td&gt;
+ Dead Parrot
+ &lt;/td&gt;,
+ &lt;td&gt;
+ This is an ex-parrot! &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;
+ &lt;/td&gt;,
+ &lt;span class=&#34;excitingNote&#34;&gt;Or maybe he&#39;s only resting?&lt;/span&gt;,
+ &lt;td&gt;
+ $0.50
+ &lt;/td&gt;,
+ &lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;
+ &lt;/td&gt;,
+ &lt;img src=&#34;../img/gifts/img4.jpg&#34;/&gt;,
+ &lt;tr class=&#34;gift&#34; id=&#34;gift5&#34;&gt;&lt;td&gt;
+ Mystery Box
+ &lt;/td&gt;&lt;td&gt;
+ If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+ &lt;/td&gt;&lt;td&gt;
+ $1.50
+ &lt;/td&gt;&lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+ &lt;/td&gt;&lt;/tr&gt;,
+ &lt;td&gt;
+ Mystery Box
+ &lt;/td&gt;,
+ &lt;td&gt;
+ If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;
+ &lt;/td&gt;,
+ &lt;span class=&#34;excitingNote&#34;&gt;Keep your friends guessing!&lt;/span&gt;,
+ &lt;td&gt;
+ $1.50
+ &lt;/td&gt;,
+ &lt;td&gt;
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;
+ &lt;/td&gt;,
+ &lt;img src=&#34;../img/gifts/img6.jpg&#34;/&gt;,
+ &lt;div id=&#34;footer&#34;&gt;
+ © Totally Normal Gifts, Inc. &lt;br/&gt;
+ +234 (617) 863-0736
+ &lt;/div&gt;,
+ &lt;br/&gt;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prevsibling</span> <span class="o">=</span> <span class="n">children</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find_previous_sibling</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prevsibling</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[74]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;img src=&#34;../img/gifts/logo.jpg&#34; style=&#34;float:left;&#34;/&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nextsibling</span> <span class="o">=</span> <span class="n">children</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find_next_sibling</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nextsibling</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[75]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;div id=&#34;content&#34;&gt;Here is a collection of totally normal, totally reasonable gifts that your friends are sure to love! Our collection is
+hand-curated by well-paid, free-range Tibetan monks.&lt;p&gt;
+We haven&#39;t figured out how to make online shopping carts yet, but you can send us a check to:&lt;br/&gt;
+123 Main St.&lt;br/&gt;
+Abuja, Nigeria
+We will then send your totally amazing gift, pronto! Please include an extra $5.00 for gift wrapping.&lt;/p&gt;&lt;/div&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">cssselect</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cssselect</span><span class="o">.</span><span class="n">Selector</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[112]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">links</span> <span class="o">=</span> <span class="n">cssselect</span><span class="o">.</span><span class="n">Selector</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s2">&quot;h3&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[118]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">links</span><span class="o">.</span><span class="n">pseudo_element</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>h3
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
+
+{% endblock %}
+</body>
+
+ 
+
+
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{%  block styles %}
+    <link href="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css"  rel="stylesheet" type="text/css">
+{%  endblock styles %}
+
+{% block scripts %}
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js"></script>
+{% endblock scripts %}
+
+{% block content%}
+    <h1>추가</h1>
+ {{ script|safe }}
+
+ {{ div|safe }}
+{% endblock content%}

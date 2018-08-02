@@ -1,0 +1,933 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+{% block script %}
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration -->
+{% endblock %}
+
+{%  block styles %}
+<link rel="stylesheet" href="/static/css/report_css.css">
+{% endblock %}
+</head>
+
+<body>
+ {% block content %}
+     <i class="fab fa-accusoft"></i>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> 
+    <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36&quot;</span>
+    <span class="p">,</span><span class="s2">&quot;Accept-Encoding&quot;</span> <span class="p">:</span> <span class="s2">&quot;false&quot;</span> <span class="c1"># 내가 인코딩 할거야 </span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">getUrl</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">):</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="mi">500</span> <span class="o">&lt;=</span> <span class="n">html</span><span class="o">.</span><span class="n">status_code</span>  <span class="o">&lt;</span> <span class="mi">600</span> <span class="ow">and</span> <span class="n">num_retries</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">getUrl</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="n">dom</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">select</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">link</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span> <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">has_attr</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">getContent</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">):</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;euc-kr&quot;</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span> <span class="c1"># 인코딩 깨진거 무시한체 바이트단위로 나눠서 해석을 한다. </span>
+    <span class="c1">#print(text)</span>
+    <span class="k">if</span> <span class="mi">500</span> <span class="o">&lt;=</span> <span class="n">html</span><span class="o">.</span><span class="n">status_code</span>  <span class="o">&lt;</span> <span class="mi">600</span> <span class="ow">and</span> <span class="n">num_retries</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">getUrl</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="n">dom</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">select</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">links</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="s2">&quot;http://www.ppomppu.co.kr/zboard/zboard.php?id=freeboard&quot;</span>
+<span class="n">contentList</span> <span class="o">=</span> <span class="n">getUrl</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;td.list_vspace img + a&quot;</span><span class="p">)</span>
+<span class="n">contentList</span> <span class="o">=</span> <span class="n">contentList</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># 공지사항 패스 </span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">contentList</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952058&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952057&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952056&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952055&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952054&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952053&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952052&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952051&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952050&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952049&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952047&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952046&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952045&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952044&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952043&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952042&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952041&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952040&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952039&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952038&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952037&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952036&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952035&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952034&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952033&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952032&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952031&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952030&#39;,
+ &#39;view.php?id=freeboard&amp;page=1&amp;divpage=1111&amp;no=5952029&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="s2">&quot;http://www.ppomppu.co.kr/zboard/&quot;</span>
+
+<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">contentList</span><span class="p">:</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">getContent</span><span class="p">(</span><span class="n">seed</span><span class="o">+</span><span class="n">url</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="s2">&quot;.view_title2&quot;</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">getContent</span><span class="p">(</span><span class="n">seed</span><span class="o">+</span><span class="n">url</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="s2">&quot;table.pic_bg table td.han&quot;</span><span class="p">)</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="n">getContent</span><span class="p">(</span><span class="n">seed</span><span class="o">+</span><span class="n">url</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="s2">&quot;table.info_bg td div.han&quot;</span><span class="p">)</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;title: &quot;</span><span class="p">,</span><span class="n">title</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;content: &quot;</span><span class="p">,</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    
+    <span class="k">for</span> <span class="n">comment_t</span> <span class="ow">in</span> <span class="n">comment</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;comment: &quot;</span><span class="p">,</span><span class="n">comment_t</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    
+<span class="c1">#     print(title[0].get_text())</span>
+<span class="c1">#     print(content[0].get_text().strip())</span>
+<span class="c1">#     if comment[0] not in None:</span>
+<span class="c1">#         print()</span>
+<span class="c1">#     else:    </span>
+<span class="c1">#         print(comment[0].get_text().strip())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>title:  [펌] 문재인 정부의 경제 상황.jpg
+content:  선요약 5줄
+
+
+ 
+
+
+1.대한민국 구조조정 시기는 2012년부터 시작했어야함.
+
+
+2.구조조정 = 실업 = 지지율 하락 = 불황
+
+
+3.단기적 해법으로 초이노믹스 (부동산으로 건설사 생명연장 + 건설경기로 경제성장률 올림)
+
+
+4.2012~2013년 폭탄을 4년이상 돌려버림 그게 부동산 버블과 지금의 경제상황임
+
+
+5.2018년 IFRS9 (국제회계기준 도입) 이게 지금의 경제상황
+
+ 
+뇌없는 섹기들은 한진,대우조선,성동,현대중공업,철강,삼성조선,STX등등 왜 이렇게 뿅뿅망했는지 이해못함. 
+조선,철강,건설은 2012~2013년 구조조정 했어야함 
+근데 언급한 대기업들은 언제 터졌느냐? 2014~2015~16년 집중적으로 터짐
+ 
+2016년 총선끝나고 1주일만에 조선업 싹~망했다고 언론에서 말함 산업은행이 자금조달하다 뽀록난거 기억함?
+이것도 3~4년을 생명연장 시켜주다 이렇게 된거임
+ 
+대우조선이 왜 분식회계하다 저꼬라지인지 
+조선업 BIG6가 어떻게 망했는지는
+중국문제도 있지만 내부적으로 구조조정 폭탄돌리기 + 플랜트 도박으로 싹다 망한거임
+조선업 다니는 사람들에게 물어봐라 2012~15년까지는 조선업 물량으로만 운영했어도 지금의 부채상황은 절대 아니라고 한다.
+조선업 부채의 70%는 해양플랜트하다 그리고 저가 수주경쟁하다
+ 
+유가 문제도 외부적인 요인이지만 지금처럼 정말적인 상황을 피할수있었어
+ 
+ 
+ 
+ 
+가장큰 문제는 일반 시민들이 모르는 국제회계기준 도입을 몰랐던거지 IFRS9
+2016~17년에 IFRS9 언급한 기사 찾기 힘들어 왜냐고? 금융위 기재부 등등은 폭탄터지기 직전까지 쉬쉬했거든 IMF때처럼
+ 
+ 
+
+2018년부터 도입한 IFRS9중에 핵심은 대손충당금이야 
+
+
+미래의 손실까지 변경되는 회계기준에 반영해야 하거든
+
+ 
+골때리지? 그렇기 때문에 올해 취업상황이 이런거고 경제상황이 이런거야
+ 
+대한한공,한진,아시아나,건설사,철강,자동차,조선,화학등등
+ 
+대기업들도 휘청거리고있지? 대한한공 부채가 어느정도 인지 아냐? 금호그룹은? 
+IFRS9 때문에 대기업들이 사내유보금을 그렇게 쌓은거야 미래가 불투명하거든
+ 
+좀비기업 비율도 어마어마하고 그냥 낮은 이자때문에 생명연장하고 있는 건설사들 일반기업들 
+이자도 감당못하는 기업들 수가 상상을 초월한다 IMF때 망한기업들 수준이라고 보면된다.
+2016년말 기준으로 3천 200개정도 되거든? 엄청나지? 
+ 
+ 
+자 이상황에서 어짜피 뒤질 기업들은 뒤지기 마련이거든? 7년이상 이자만 내고있던 기업들도 많고 못내는 기업들도 어마어마하거든
+이런 상황에서 대기업들은 하청을 노예처럼 굴리고 저임금으로 주6일동안 굴린 업체가 어마어마 할꺼야
+ 
+ 
+ 
+그런데 2017년 5~7월 인수인계할때 나라상태 보닌깐 답이없거든
+구조조정 폭탄을 5~6년동안 돌렸는데 이거 해결하기도 솔직히 힘들지
+그런데 취업자? 새로운 일자리를 만든다? 이것도 자금이 있는 기업들만 해당하는거지
+중소기업들은 거의 아사 직전이거든 
+ 
+2011년~2016년까지 정부에서 프렌차이즈에 뛰어들라고 거의 조장했지
+PD수첩 보면 2012년 폐업자들 2013년 2015~16 명견만리 시사기획창등 엄청나게 나오거든 
+임대료 , 본사갑질 ,인테리어 비용,통행요금 엄청나게 터졌어
+ 
+그런데 이렇게 터지기까지 최소 3~4년은 걸렸다는거지 언론에 나오기까지 엄청오래걸려 생각보다
+터지기 시작한 시점이 2015년말 부터임
+ 
+진짜 답없는 경제상황 아니냐?
+퇴작자들 자영업으로 뛰어들게 조장한게 이명박근혜야 지들도 딱히 답이없거든
+그런데 외노자 규제를 더 풀어버린상황인데 내국인 , 외국인 가격경쟁으로 임금은 오르기는커녕 제자리걸음
+(외노자 비율 인구수에 비하면 일본의 4배임 일본은 공론화 과정,학계연구자료까지 싹나오고 받은게 우리의 1/4임)
+ 
+ 
+외노자,퇴직자들 프렌차이드업 경쟁,구조조정 폭탄돌리기,수천개의 한계기업,부동산 버블,대기업갑질,언론사 게x끼들,저임금,국제회계기준
+ 
+그리고 국가부채 이명박근혜 시대에 어마어마하게 증가했음 노무현 재정적자 10조 기억하냐?
+이명박근혜는 500조가 넘음 DJ는 뭐 IMF똥받아서 그렇게 했다 생각해도 쥐명ㄹ혜는 구조조정 미루면서
+기업들 엄청나게 밀어준거임 그 폭탄이 언제 터지느냐? 2018~2019년으로 계획세운거야 
+누가? 관료들이 ㅋㅋ
+ 
+바뀐 회계기준에 좀비기업에 부동산에 몰빵한 퇴직자들 자녀 결혼하려고 대출받은 은퇴직전의 사람들 무분별한 프렌차이즈 (자영업 비율 세계4위~5위)
+정말로 누가와도 답없는 상황인게 대한민국이다.
+ 
+문재인 정부는 죽을사람 죽게 냅둔다 
+첫번째가 경쟁력없는 자영업자 
+두번째가 부동산 투기꾼 , 건설사
+새번째가 좀비 한계기업
+ 
+이거 처리 못하면 더큰 폭탄이 되어온다. 20조에 해결할 돈을 100조를 들여서도 해결못하는 상황까지옴.
+진짜IMF 직전 단계까지 나라 개털만들고 이제 1년차인 정부가 감당하기엔 답이없음.
+ 
+ 
+멍청한 노예놈들에게 말하자면 2017년 예산은 박근혜정부 예산인거 알지?
+ 
+2018년 예산이 문재인정부 예산이야 ... 이제 시작인데 답이없는 상황에서 죽을사람은 그냥 냅두겠다라는게 이정부의 방향임.
+ 
+미쳤다고 정부에서 공기업 준공기업 취업을 늘릴려고 했겠냐? 최저임금 올리는 이유가 뭐겠냐? 
+ 
+경제상황 진짜 제대로 알고있는건 문정부 청와대 경제팀이야 
+ 
+정부사럼들이 &#34; 지금 IMF 직전 단계입니다 &#34; 라고 말하면 경제상황 어떻게 되겠냐? 말하고 싶어도 억울해도 그렇게 말못해 
+ 
+그런데 이걸 개누리놈들 + 무뇌놈들이 선동하교 이용하는거지 
+ 
+어짜피 수년동안 폭탄돌리기한 좀비기업들 처리하고 자영업 비율높은 경제구조 바꾸려면 죽을놈들 죽게 냅두고
+ 
+욕처먹어도 길게보고 가야한다는게 이정부의 방침이라 생각한다.
+ 
+ 
+슬픈이야기지만 자영업은 더더더더더 망하는사람 많이 나오며 비율도 엄청 줄어들것임
+ 
+외노자들도 본국으로 보내거나 연장 안해주고 그 자리를 내국인으로 체울것임
+ 
+불체자 단속도 심하게 할거야 외노자랑 그동안 기업들 사정봐주면서
+ 
+일본보다 4배를 더받았거든 자국민 동의도없이. 외노자 비율도 줄이는 정책으로 가는거 보닌깐 욕처먹어도 길게보고 가는것같다.
+ 
+ 
+더 암울한건 똥은 싸지도 않았는데 치워야 하는것과 그걸로 인해서 욕처먹고 비난 받아야할 대상이 된다는거
+그리고 미국금리인상과 부동산 폭탄이 드디어 터졌다는거 국제회계기준이 바뀌면서 기업들은 미래의 손실까지 
+반영해야하는 상황이라는거 
+ 
+모든 폭탄이 2018년 19년에 다 터질거라는거 그 폭탄돌리기한년놈 감옥에서 꺼내오자라고 하는놈들 북한으로 보내야함.
+ 
+ 
+-----------------------------------------------------------------------------------------------------------------------------------
+ 
+하도 경기가 어렵네 어쩌네 하는 글이 지속적으로 올라오길레 올립니다.
+title:  편의점 수익 구조의 진실
+content:  기가 막히네요. 
+
+ 
+
+
+카드 수수료, 본사에주는 수수료, 임대료 개선해야 합니다.
+
+ 
+편의점주들은 이러한 것들 해결 노력해야 본인들도 산다는 것 알아야 합니다.
+ 
+언론들이 을과 을 싸움 확대 시키는 이유는 그들의 스폰서 기업들에게 불똥 튀는 거 막기 위함 아닐까요?
+title:  아 듭다
+content:  무쟈게 덥네요
+에어컨 빵빵한 건물안이 짱짱짱~!
+title:  예전에 저희때는 학교에 선풍기만 있었어요.
+content:  에어컨없이 그 선풍기만으로 버티고 공부했었죠.
+comment:  제가 다니던 학교는 선풍기도 없었어요.
+title:  천안야구장 지을 돈으로 만든거.jpg
+content:  인천 숭의아레나
+
+약 1100억원 소요
+
+이래서 투표 정신차리고 해야 한다는 겁니다
+comment:  천안 야구장도 올려주시지 비교짤로
+comment:  천안 야구장은 진짜 발본색원해야함
+title:  아파트 집앞에 쓰레기 내놓으시는분 계십니까?
+content:  앞집이 커다란 종량제 봉투를 일주일째 내놓고있네요.
+
+그냥 쓰레기면 말도 안하겠는데 김치국물 묻은 비닐봉지도 들어있어서 냄새조 조금씩 나고 벌레도 꼬일 느낌인데요.
+
+제가 아파트를 처음 살아보는데 이게 일반적인 상황인지 아닌지 궁금합니다.
+
+아니면 가서 한마디 해야할거 같아서요.
+comment:  관리실 통해서 얘기하셔야 할듯
+comment:  일반적이진 않은데 그러는사람들이 생각보다 많습니다..
+가서 말해야죠
+comment:  진짜 그런인간들보면 답없죠 못배운티를 내는듯
+comment:  냄새나 벌레 꼬이는거 내놓으면 매너없는거죠....
+comment:  저희 아파트 층에도 집앞에 항상 봉지에 뭔가 담겨서 내놓는 집있어요.
+음쓰도 있고 종량제 봉투도 있고...
+그것도 엘레베이터랑 가장 가까운 집이라 지나다닐때마다 거슬리게 보네요.
+comment:  엥;; 너무 비매너 아닌가요. 요즘 같은 날씨에는 그런 쓰레기 봉투가 복도에 있으면 벌레도 많이 생길텐데 ㅠㅠ
+그런 집은 저는 처음봐요. 문제 있는 행동같습니다. 말해서 치우라고 해야할듯해요
+comment:  생각보다 국물 나오는 봉투 많은것 같아요. 엘베 탔을때 간혹...
+comment:  직접은하시마시구요 관리실에 전화하세요
+저희도 앞집할머니가 문앞에 분리수거를 내놓더라구요
+음식물쓰레기 포함해서...
+보기않좋다고 치워달라했어요
+comment:  복도식 아파트에서 많이봤네요
+comment:  완전 비매너죠 관리실 통해서 민원 넣으세요
+title:  썰전 박형준보다 노회찬이 먼저 하차하게 생겼네요.
+content:  특검 &#34;드루킹 측근, 노회찬 측에 정치자금 전달 판단&#34;(속보)
+http://m.yna.co.kr/amp/kr/contents/?cid=AKR20180717105700004
+
+썰전 패널 최단기간 기록 세우겠네요.
+세상 참 요지경입니다.
+comment:  판단은 판사가
+comment:  저는 노회찬이 돈을 먹을 수도 있다고 생각합니다만
+
+저런 찌질이한테 저런 식으로 허술하게 
+저렇게 약소한 금액을 먹었을거 같진 않습니다.
+삼성에 연락하면 훨씬 엄청난 금액을 스마트하게 먹을 수 있을거 같은데
+왜 저런 짓을 했을까요?
+
+양심을 팔때는 최대한 비싸게 파는 겁니다.
+저런 헐값에 팔았을거 같진 않네요.
+title:  삼계탕 먹으러 왔습니다
+content:  점심시간 지나서
+
+와서 사람 별로 없네요
+
+ㅎㅎㅎ
+
+13000원입니다
+
+다들 삼계탕 드셨나요?
+
+오랜만에 먹어서 그런지 맛있네요
+title:  감기 걸렸네요 ㅠㅠ
+content:  개도 안 걸린다는 여름감기에 걸렸네요;
+사무실이랑 밖이랑 여기저기 돌아다니면서 온도 차가 있다보니
+감기에 걸린 것 같습니다 ㅠㅠ
+덕분에 한여름에 팔자에도 없는 감기에 기침하고 난리네요
+comment:  저랑 같은 냉방병이네요....
+title:  임신하고 입덧 안하는 경우도 있나봐요..
+content:  제 와이픈데
+ 
+아직 7주이긴하지만
+ 
+전혀 입덧이 없네요... 
+ 
+다행입니다..
+ 
+신기하네요
+comment:  복 받으셨네요.
+친구 둘째가 지금 6주차인데
+와이프 입덧 땜에 본인까지 죽을라
+하더라구요 ㅡㅡ
+comment:  제 와이프도 입덧은 안했어요.
+그냥 먹기 싫은 음식과 먹고 싶은 음식이 있었을뿐..
+comment:  복받은 겁니다.
+comment:  제 와이프는 입덧은 안했는데 그냥 잠만 자더라고요
+
+알고 보니까 잠만 자는것도 입덧과 같은거라고 하더라구요?
+comment:  진짜 복받으신거에요 임신한 친구 임신초기에 만날때마다 먹고 싶은 음식이 있어서 한입만 먹고도 막 토할거 같다고 하면서 진짜 매번 토하고 난리났던;;
+title:  방금 저번 엘지전자 이름 이벤트 기프티콘 들어왔어요
+content:  더베스트 지성?? 머지 하고 생각하다가
+
+저번에 옥션인가 지마켓 에르지 세탁기 이름 짓는거엿군요 ㅎㅎ
+
+이디야 아메리카노 더운날에 한줄기 빗방울이네요 ㅎㅎ
+comment:  저도 뭔가하고 구글링하다가 지마켓 일등엘지 보이는거보고 아하 했네요 ㅋㅋ
+comment:  추첨한다더니 100% 지급인가 보네요.
+title:  자동차 보험 삼성화재 --&gt; DB손해보험으로 갈아 타려고 준비 중입니다 ㅎㅎ
+content:  삼성의 악행(?)을 익히 보고 들어왔던지라 3년동안
+
+가입했었던 삼성화재 다이렉트 자동차 보험을 버리고
+
+DB손해보험 다이렉트 자동차 보험으로 갈아타려고
+
+준비 중입니다. 
+
+컬쳐랜드 문화상품권도 먹힌다고해서 할인해서 
+
+40만 원 어치 구입해놨고 이벤트로 3만 원도 페이백
+
+해준다고해서 결제만 앞두고 있는데...
+
+기존 보험이 이번달 21일 만기이고 21일에 장거리 
+
+갔다 올 일이 있어서 그런데 주행거리 마일리지 
+
+할인이 나름 쏠쏠한지라 장거리 갔다 오고 나서 
+
+계기판 사진 찍고 보험 만기 날에 딱 맞춰서 가입
+
+하려고 하는데 괜찮겠지요? ㅎㅎ
+comment:  T맵 10%할인 챙기셨죠?
+comment:  마일리지 그건
+만기 한달전부터 만기 한달후까지가 등록기간임
+
+가입할때 사진등록하는것도 따로 기준이 있어요
+당일 안해도 됨
+
+만기 주행거리 등록은 안내 문자 올거에요
+언제까지 등록하라고
+comment:  전 올란도인데 db너무 비싸서
+다른데로 옮겼어요...
+차종마다 다르다고하니 여기저기 알아보세요
+다른회사랑 10만원차이나더라구요
+차2대하니깐 20만원넘게 차이나더라는....
+comment:  그전에 게시판 뒤져보면 보험료 조회만으로 챙길수 있는 혜택들이 각 보험사마다 많이 있습니다. 저도 6월에 보험 갱신하면서 약 8만원정도치의 포인트 혜택 챙긴거같네요~
+comment:  CARSVC 경유해서 3만원 받고 컬쳐 먹이고 5%페이백 이벤트 까지했었어요
+개꿀..
+comment:  네! 당연히 적용했습니다. 할인 다 적용하니까 삼성화재 보다 5,000원정도 저렴하더라고요 ㅋㅋ 총 금액은 비슷한데 컬쳐 할인률 + 페이백 3만 원 따지면 DB로 가는 게 더 낫네요. ㅎㅎ
+comment:  동부
+
+70먹은 회장이 20대 여비서 성추행으로 말많던곳
+comment:  기존 삼성화재에서 몇 주 전에 마일리지 사진 등록하라고 카톡와서 등록 하고 10만 원 가까이 환급 받았었어요 ㅎㅎ 가입할 때 사진 등록 기준은 다시 자세히 확인볼게요 ㅎㅎ
+title:  냉방병이 엄청 무섭네요...
+content:  너무 더워서 에어컨 풀로 쒜다가 걸렸는데
+감기 비슷하게 피로하고 무기력해서
+타이레놀 먹고 기절했네요 ㅠㅠ
+comment:  에어콘 직풍 자리는 진짜 냉방병 걸리기 딱 ㅠ
+감기 조심하세요~
+comment:  더워죽은사람도 있는데...
+comment:  저도 에어컨 바람 직타로 맞고 고생 여러번 했어요ㅎㅎ
+comment:  다이렉트로 쒜면 안되더군요.. 바로 걸려요 ㅠㅠ
+comment:  에어컨 22도로 틀어놓고 샤워후 물기안말리고 직빵으로 쐬는데 ㄷㄷㄷ 그러지 말아야겠네여....
+comment:  쏘이다
+comment:  제일 위험한거라더군요 좀 턴을두고 껏다 켰다 해야 된다고.. ㄷㄷ
+title:  오늘자 개적개.news
+content:  휴가철에는 유기견이 평달의 2배로 증가한다네요
+
+
+몇번 하는 이야기지만
+
+소음, 배설물, 목줄, 행인 공격, 유기견 등등
+개로 인해 발생하는 모든 문제의 근원은 개빠, 개의 적은 다른 누구도 아닌 바로 개빠입니다
+comment:  유기견이 가장 많이 발생하는 시기가 이사철 졸업철 휴가철 등이라고 하더군요.
+comment:  개버리는 것들은 개빠도 애견인도 아닌 인간 쓰레기죠
+comment:  아직 우리나라는 애완동물에 대한 인식이 부족한거 같애요 이런거 보면...
+
+물론 자기 가족같이 아끼고 사랑해주시는 분들은 제외입니다;;
+comment:  프랑스나 외국도 마찬가지 입니다.  
+애도  버리는데 개야 더하죠.
+comment:  동물을 유기하는 사람들은 엄벌에 처해지는 법이 생겼으면 좋겠습니다.
+comment:  개빠들은 개먹는것보다 개키우는것부터 신경쓰시길
+comment:  222
+comment:  가족을 버리는 클라스 ㅋㅋㅋ
+title:  지하철인데 왠할매가 개를 풀어놨네요
+content:  분명히 케이지안에 넣어야 하는데...
+
+케이지 바깥으로 꺼내서 사람앉는곳에 올려둠...
+
+헛참...
+comment:  미개하죠 ㅋㅋ
+comment:  제목은 jpg인데 사진은 어디에??
+comment:  복날이니 때려잡수라 이건가
+comment:  제목 실수요...........
+comment:  그냥 멍뭉이가 이뻐서 넘어갈려구요
+comment:  그렇긴한데 멍뭉이 이쁘네요
+comment:  개판이군요...
+comment:  자기집안방이랑 공공장소랑 분간이 안되시는분인가....
+comment:  할매 ㅋㅋㅋ
+comment:  옛날분은 대중문화에 무신경할 수도 있습니다. 
+할머니 강아지 풀어두시면 안된다고 함 말씀해보세요,
+title:  우리나라 외식 영화 비율이 많이 높죠
+content:  그만큼 할게 없고 즐길게 없어서
+돈 덜 더는거 하기 쉬운거에 쏠리는거 같아요..
+comment:  생활체육 즐길 공간이 없다보니 당구장이 성행ㅋ
+comment:  외식비율은 별로 안높은데
+좀 가격대가 있는 식당외식이 많은거 아닌가요??
+집에서 밥 잘안해먹는 나라도 많아서;;
+comment:  중화권은 아침부터 외식하는걸요 문화차이죠
+comment:  외식은 안높고 영화만 기형적
+title:  ‘밑 빠진 독’ 천안야구장에 수십억 혈세 추가 투입 논란.jpg
+content:  ‘밑 빠진 독’ 천안야구장에 수십억 혈세 추가 투입 논란
+ 
+https://sports.news.naver.com/kbaseball/news/read.nhn?oid=529&amp;aid=0000025258
+ 
+
+순천시 &#39;47억&#39; 야구장https://sports.news.naver.com/kbaseball/news/read.nhn?oid=529&amp;aid=0000022662
+
+ 
+한화, 서산 제2구장 준공식, 100억원 투입
+ 
+https://sports.news.naver.com/kbaseball/news/read.nhn?oid=076&amp;aid=0003286270
+comment:  당시 시장 자한당이구만 ㅋㅋㅋ
+comment:  꺼~억
+comment:  누군가 인마이 포켓 했네.
+comment:  담당 공무원 명찰을 안달아서 부패가 일어났네요
+comment:  천안 정말로 개꿀!!!!!!!!!!!!!
+comment:  세금 살살 녹는다~~
+comment:  미리 야구장을 짓기로 계획을 세워놓고 착공 1년여 전에 
+매입예정지를 주거지역으로 용도변경시켜서 
+천안시가 땅값을 올려주고 매입을 했죠. ㅋㅋㅋ
+
+토지보상비 540억원중 60프로가 특정 2인에게 몰빵..
+
+그야말로 노답입니다.
+title:  홍미노트5  출고가 299,200원
+content:  지난번 뽐뿌에
+ 
+적립금  할인쿠폰 등의  혜택으로..  (액정교환권+보조밧데리+액정필름+케이스 등등)
+ 
+24만원 ~ 26만원   선  형성되던데...
+ 
+ 
+ 
+29만9200원   이상으로 사시면 사기입니다. 
+ 
+참고하세요. 
+ㅋㅋㅋ
+comment:  할부 안끼고 그냥 사면 되겠네요
+comment:  글로벌 롬으로 직구로 사는게 더 싸다고 하던데요
+comment:  이거 기계만 못사나요 ㅋ
+comment:  살수있어요 자급제로
+comment:  아이나비A/S 가능한 자급제 모델로도 판매중입니다.
+comment:  글로벌롬으로 사면 엘지도 쓸 수 있는건가요?
+comment:  와 가성비 좋네요 ㅋㅋ 실제 성능은 어떤가요?
+comment:  가격보면 한 번 써보고 싶은데 저정도 사양이면 삼성.엘지 플래그쉽 성능인가요?
+comment:  정발모델과 동일한 모델이라
+3사 사용가능하다고 합니다
+comment:  네 정발이나 직구랑 같습니다. 다만 직구는 아이나비에서 AS 안받아줍니다.
+comment:  준플래그쉽정도요.
+카메라는 기대하지 마시구요
+comment:  아니요. 샤오미도 플래그쉽은 최소 두 배는 더 줘야 합니다.
+title:  KBS 구노조, 진실과미래위 민사소송 제기
+content:  http://www.mediaus.co.kr/news/articleView.html?idxno=129300
+
+ 
+
+
+이유는 &#39;공공감사법 위반·조합원 보호&#39;...KBS 적폐청산 무력화 의도
+title:  이간질
+content:  남 vs 여
+자전거 vs 자동차
+기타등등.... 
+
+목적이 뭔지 뻔한데
+
+놀아나는 사람들 보면.. ㅜㅜ
+comment:  신경끄면 편해요
+comment:  자전거 자동차는 이간질문제가 아닙니다
+
+욕먹는 자라니들
+그거 옹호하는 자전거동호인이나 매니아를 본적없습니다
+
+그냥 자라니들은 논란의 여지없는 나쁜놈들
+comment:  신경 끄면 답이 없게 될겁니다.
+잘못된 건 잘못됐다고 문제를 제기해야 바뀌죠.
+comment:  남 대 여
+노년층 대 젊은층
+
+계속 싸움시키고 있어요!!
+
+주옥순 여사가 존재하는곳은 이간질하는 곳입니다!
+
+절대 놀아나지 맙시다!!
+comment:  온라인에서 그렇게 한바탕 하고 나면 좀 스트레스가 풀리나봅니다.
+title:  점심 백반집에서
+content:  준비한 반계탕... 오늘 초복인 줄도 모르고 갔다가 김모락이는
+이 녀석 보고 알게 됐네요.
+나름 저렴한 사장님 맘이 고맙네요. 
+다들 더운대 기운내세요~!
+comment:  오늘장사는 남기는거 없이 장사하시나보네요...
+comment:  나름 저렴한 사장님 마음.....ㅎㅎㅎㅎ
+중간에 &#34;데&#34;가 빠졌나봐유....
+title:  한국 1인당 음식점수, 미국의 7배
+content:  미국이 생각보다 음식점수가 적나 보네요
+comment:  보통 차끌고가야되서  쇼핑몰안이나 주유소근처 드라이브쓰루등 크게되어있어서 그런거같아요
+
+뉴욕같은곳은한국이랑비슷
+comment:  미국은 땅도 크고 대도시 몇곳말곤 시내에 차타고가야 뭘 사먹고 하니...
+comment:  2008년 기사인데
+제가 알기로 최근에 발표에 따르면 
+한국 80명당1명이 음식관련 서비스 종사 (위 기사는 83명당 1)
+일본은 140명당 1
+미국은 600명당 1
+한참 다르긴 하죠
+comment:  음식점은 수는 많은 대신 규모가 작아서 아닐까요
+comment:  이래서 대부분 망하죠......
+
+일자리가 없는게 문제
+comment:  역시 먹방의 종주국....
+comment:  외식의 나라 배달의 나라 ㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷ
+comment:  기자라는 사람이 띄어쓰기 개념이ㅡ없나.. 음식점수 라니
+comment:  2008년도 기사면 10년전 얘기니까
+음식점 수 가 더 차이나든, 차이가 좁혀졌든
+강산이 변한만큼 무언가 변해도 변했겠네요 ㅋㅋ
+comment:  우리나라가 지나치게 자영업 비율이 높은것도 있고,
+미국이 땅덩어리 큰 특수성도 있고
+comment:  ㅋㅋ 저도 왠 별점 맥이는 음식점수인줄 알았음요
+title:  서울 충무로 싱크홀 ?
+content:  이거 정말 위험하네요 자주 가는데인데 
+땅이 꺼졌네요ㅠ운나쁘면 지하로 떨어지겠네요 ....
+comment:  상수도 터져서 물바다 된 후에, 저렇게 된거라 싱크홀 보다는....
+
+앞으로 생길수 있겠죠...
+comment:  땅이 살짝 꺼진듯 하네요
+이번에 물바다 된것 때문일까요?
+comment:  왜케 기울어져 보이쥬
+comment:  아하^^  그렇군요
+comment:  기울어진 운동장..
+comment:  많이꺼졌습니다 ..
+comment:  생각보다 깊더라구요
+comment:  앞으로 도심 곳곳이 저렇게 될거에요
+
+서울을 비롯한 대도시의 상수도관 수명이 다되가서ㅠㅠ
+comment:  건물이요 ㅎ
+comment:  이거 정비가 시급하네요 ...
+comment:  헐????? 충무로 있다가 왔는데 
+
+이런 일이ㄷㄷㄷㄷㄷ
+comment:  충무로역은 괜찮나 모르겠네요
+comment:  그렇다고 상수도관을 다 파내고 새로 깔지도 못하니까, 결국 주먹구구식으로 땜질만 해야하는데,,
+ 이게 더 큰 문제..;
+comment:  저도 자주오는곳인데 깜짝했네요 ..
+comment:  역도 문제가 될꺼같아요 ...
+title:  tv가 가끔 꺼짐현상이 발생하는데.
+content:  엘지tv입니다. 뒤가 튀어나온. 
+대략 10년이상 사용한듯합니다. 
+알다시피 tv 부술일도 없고 고장날일도 없는데 최근 화면 꺼짐현상이 나오네요. 
+이거 뭐가 문제인지 ㅜㅜ as비용 많이 나올까요? 
+34인치인데. 
+tv욕심이 많지는 않지만. as비용 꾀나오면 
+뽐게시판에 싸게 나올때까지 지켜보다가 구입해야겠습니다. 
+아주큰걸로
+comment:  10년이면...충분히 제값하지않았나요 ㄷㄷㄷㄷㄷㄷㄷㄷ
+comment:  기판 갈아야 하는데 비용이나 성능 고려해서
+다들 그냥 새로 사버림
+comment:  TV 왈 : 이제 그만 날 죽여줘 ㅠㅠ
+comment:  일단 as 견적 받아보시고 10만원 이내면 수리 후 사용 그 이상이면 교체요 ㅋ
+comment:  전원부 문제일수 있는데 볼록한거면 그냥 보내주셔도....
+comment:  저희집에 오래된 pdp 전원안켜지는거 10만원 안되게 사설수리 받았는데 얼마안가서 그냥 새tv샀어요 ㅋㅋ 이기회에 그냥 새거 장만하세요
+comment:  견적도 보지마시고 쓰다 버려요....
+괜히 출장비만 아깝
+comment:  새로 구입하는게 나으실 겁니다. 요즘 TV도 저렴해서...
+comment:  보드나 전원부 혹은 컨트롤부쪽 맛갈려고하는걸지도
+
+집에티비도 컨트롤 패널쪽 맛가서 리모컨조작도안되서 뚜껑따서 패널연결케이블 뽑고 리모컨으로만 보고있음
+
+그거고장나면머 이제 바꿔야죠
+comment:  뒤가 튀어나온 티비는 고물상 아저씨에게 물어보니 안가져간다네요
+title:  통일 되서 북한지역에 살면 좀 시원할까 했는데
+content:  큰 차이가 없는거 같네요.
+
+저기도 찜통...
+
+평양 현재 기온 31도
+comment:  철원 군생활 했는데 
+여름엔 더 덥고 겨울엔 더 춥고가 정석 아닌가요. ㅋㅋ
+comment:  개마고원은 시원하지 않을까요?
+comment:  시베리아가 어제 30도래요 ㅎㅎ
+comment:  원산 쪽은 좀 시원할거 같은데요 ㅋㅋㅋ
+comment:  31도면 시원한 편인데요? 여기 대구는 36도가 기본입니다.
+comment:  철원이 눈많이 온다는 이미지가 강한데 여름에도 쪄 죽어요....극과극이 공존하죠
+comment:  기후는 그냥 부산이 젤 좋죠. 여름에 시원하고 겨울에 따뜻하고... 태풍이 좀 와서 그렇지..
+comment:  개마고원은 7~8월에도 21~25도 라고 하니 시원 할 듯이요
+comment:  개마고원은 지대가 2000미터 이상이라 시원할거에요
+comment:  서울에서 에어컨 빵빵하게 틀고 사세요
+comment:  ㅋㅋㅋㅋ 그런가요
+comment:  다행히 개마고원 살아봤다는 분은 아직 없군요.
+(어?)
+comment:  아이고...
+comment:  한반도내에 어딘가는 좀 시원한곳이 있을거 같긴 한데
+
+어딥니꽈!!!!!
+comment:  ㅠ.ㅠ 화염저항 20% 찍은 분들만 사시나요.
+comment:  대프리카 더위부심 ㄷㄷ
+comment:  그렇군요. 혹한만 기억을 하니
+comment:  그래요? 오... 의외군요.
+comment:  산속이요
+comment:  훗날 함 가볼일이 있으면 좋을거 같습니다.
+
+햐...
+comment:  ㅠ.ㅠ 산속
+comment:  이천미터면 ... 밥도 설익을수도 있겠군요.
+
+오
+comment:  하기사... 이렇게 생각하면 또
+
+편의시설 잘되어 있는 서울이
+title:  일반공원에 애완견 데리고 오는 사람들 어떻게 생각하시나요?
+content:  집 근처에 가주가는 공원이 있는데 얼마전부터 애완견 목줄하고 입마개 하고 산책하라고 현수막이 붙어있더라고요
+여기가 어린아이랑 가족들이 많이 오는 곳인데 애완견 출입이 안됐으면 좋겠어요.
+ 
+
+다 그런건 아니겠지만 잔디에 돗자리 깔고 애들은 잔디에서 뛰어노는데 가끔 강아지 배설물들이 있더라고요...
+대부분은 치우시는거 같은데 안치우시는 분들이 있더라고요.
+ 
+
+소변은 그냥 잔디밭에 하더라고요... 주인은 그냥 지켜보고...
+애들이 뛰어노는데 잔디밭인데... 넘어지기라도 하면 강아지 오줌... 바로 돗자리 접고 집으로 왔네요...
+ 
+강아지가 출입이 되는 공원은 왠만하면 안가려고 합니다.
+ 
+법으로 강아지가 출입이 되는 공원이 따로 있었으면 좋겠네요.
+comment:  애완견 수준이면 괜찮은데
+사냥개 수준인 큰개는 진짜 한마디 해주고 싶더군요
+comment:  관리잘하면 신경안쓰는데
+
+대부분이 스마트폰 보며 늘어나는줄 들고와서
+개가 어디로 가든 신경안쓰는 부류죠.
+
+주인이 개를 산책시키는건지
+개가 주인을 산책시키는건지
+comment:  전 공원에서 노상방뇨하는 사람 술먹는 사람 진짜 싫더라구요. + 쓰레기 버리는 사람.
+comment:  애완견이든 큰개든 작은 개든...
+사람하고는 구별을 해줘야 ....
+우리애는 안물어요 하는 것들...에게 물어 보고 싶은 말...
+당신 애들은 똥오줌을 아무되나 싸나 보내요...개빠야!!!!!!!!
+comment:  출입 못하게 하는게 좋죠 입마개 하는 사람 없더라구요 목줄 안하는 사람도 보이고
+comment:  드립에도 불편하신 분 많군요?
+comment:  개 출입 못하는 공원은 없을걸요?
+comment:  애완견 출입금지를 하더라도 떠돌이 개, 고양이 배설물, 새 배설물, 쥐 배설물, 사람 침, 가래가 있는 곳이 공원입니다. 물론 애완견 대변 안 치우는 것들은 극혐이고요.
+comment:  공원에 출입못하게 하는건 오바인거 같지만.. 목줄, 입마개, 배설물 치우는 기본적인건 꼭 해줬으면 좋겠어요. 안하면 공원출입 못시키게..
+comment:  대소변처리만 지정자리 만들어서 따로 관리해주면 상관없을거 같아요.
+comment:  술먹으면 개가돼죠
+아무대나 방뇨하니까
+comment:  +가래침 뱉는 사람
+comment:  의외로 많습니다 ㅎㅎ
+comment:  어디요? 큰 공원중이 있나요?
+아니면 알려진 곳 중에..
+comment:  일부 국립공원이나 논산 시민공원 
+미사리 조경 경기장은 케이스 있어도 퇴짜 맞은 기억이;
+title:  군이나 경찰 관련 민간 단체치고 제 정신인 애들 없어요
+content:  군 제대한 사람들 모임단체나 경찰 퇴직자 단체치고 제 정신인 애들이 없네요
+ 
+툭하면 회사에 전화해서 물건 팔아달라고 하고
+ 
+수의계약 요구하고
+ 
+자기들 행사하는데 후원금 지원해달라하고...
+ 
+완전 쌩양아지들입니다
+ 
+방금 전화 한 통 받았는데요
+ 
+자기들이 북한 다녀왔다고 하나... 진짜 다녀왔는지도 모르는 사람들이기도 하구요
+ 
+자유 민주주의를 위해 자기들이 희생했다고.. 도와줘야 하는거 아니냐하며 
+ 
+반말하고 고압적인 말투로 목소리 크게 높이는데 쌍욕 퍼부을뻔 했네요
+ 
+뭐 저딴 개XX들이 있는지... 신발넘들입니다
+comment:  경우회라고 있긴한데 그런 분들은 아직 못봤네여..
+comment:  경우회는 양반이고 이상한 사이비 단체들이 종종 전화옵니다 경찰 퇴직 단체래요
+comment:  자기가 진짜 열심히 일한 사람은 생색 안내죠.
+꼭 열심히 일 안한 사람이 생색내는 법입니다.
+title:  나이 먹으니까 건강식품에 관심이 생깁니다. ;;;
+content:  뭐가 좋은지 계속 검색하고 있어요.
+ 
+ 
+위가 안좋고 장이 안좋아서
+ 
+ 
+많이 못먹고. 소화가 잘 안되느 느낌.
+ 
+ 
+거기에 나이 먹어서 인지 만성피로까지..
+comment:  운동하세요
+comment:  먹으면 심ㄹ적인지 모르지만 
+좋아지는거 같아요
+comment:  프로바이오틱스, 카베진, 양배추즙
+종합비타민 오메가3정도...비타민d
+title:  댕댕이들은 낭낭이들한테 왜 맨날 얻어터질까D ㅋㅋㅋㅋ
+content:  귀여운댕댕이들
+
+사랑스러운 낭낭이들 주위에있으면
+
+항상 냥펀치에 얻어맏고
+
+댕리둥절 표정 지으면서 ㅋㅋㅋ멀어지더군요
+
+둘다넘귀엽지만
+
+댕댕이는 항상 얻어맞음 ㅜㅜ
+comment:  주딩이 들이 미는 애들이랑 냥펀치 쓸 줄 아는 애들이 다르니까요 ㅋㅋㅋ
+그치만 댕댕이들 화나면 냥이들 훅 가요 ㅠㅠ
+comment:  개한테 물려서 부상당한 고양이 영상이 어딨더라....(뒤적뒤적)
+comment:  현실은 성격 있는 개들한테는 물려죽습니다
+특히 사냥 본능 강한 애들은 길고양이 킬럽니다
+comment:  고양이가 많아진 이유중 하나가
+동네 똥개들이 없어져서 그렇죠..
+진돗개 비스무리한 똥개들한테 걸리면 죽는거 순식간..
+comment:  냥이들 댕댕이한테 깝치다가 잘못 물리면 바로 황천길가요
+애초에 무는 힘 자체가 달라요
+comment:  냥이들도 나쁜 의도로 공격하면 발톱이 자동으로 튀어나오는데
+호기심에 툭 치는 정도로는 개들도 그닥 기분나쁘진 않은가봐요.
+comment:  주인이 고양이 아끼는 걸 아니까 가만있지
+
+전혀 상관없는 고양이면 그냥 죽여버리더라고요
+comment:  대부분 댕댕이들이 봐주는거에요...........냥이들 목 물어버리면 끝남...
+comment:  고양이는 싸가지 없는게 천성이고
+개는 참는게 천성이라서 그런듯.
+개와 고양이가 한 집에 살면 고양이가 상전입니다.
+아.. 물론.. 
+어느집이나 고양이가 최상위 상전이에요. -.-;;;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
+{% endblock %}
+</body>
+
+ 
+
+
+</html>
